@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap android:src="@drawable/app_opened_bg"/>
+    </item>
+    <item>
+        <bitmap android:src="@drawable/logo_with_name"
+            android:gravity="center"
+            android:tileMode="disabled"/>
+    </item>
+</layer-list>
