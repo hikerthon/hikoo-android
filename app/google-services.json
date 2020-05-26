@@ -1,138 +1,72 @@
 {
   "project_info": {
-    "project_number": "836211987231",
-    "firebase_url": "https://ardovenation.firebaseio.com",
-    "project_id": "ardovenation",
-    "storage_bucket": "ardovenation.appspot.com"
+    "project_number": "598247517177",
+    "firebase_url": "https://bamboo-creek-277702.firebaseio.com",
+    "project_id": "bamboo-creek-277702",
+    "storage_bucket": "bamboo-creek-277702.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:836211987231:android:c9e10bf04e82f3c033562a",
-        "android_client_info": {
-          "package_name": "com.ardomus.ardovenation"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "836211987231-4u1mao1gafg6ql6crd83ru4ofdinm50j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ardomus.ardovenation",
-            "certificate_hash": "9762072efea26800dadd2be98b4fdf744c555785"
-          }
-        },
-        {
-          "client_id": "836211987231-sooc87t9ihiutvgcjad0rcrdq3uljnu2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDMlQekB3kfsVmNho4k2NBaj7lQzkXwZBA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "836211987231-sooc87t9ihiutvgcjad0rcrdq3uljnu2.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "836211987231-9j9it4dcpafmfqs9prfne3nrj8qah60j.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ardomus.ArdoVenation-Dev"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:836211987231:android:1d556e763c5291d133562a",
-        "android_client_info": {
-          "package_name": "com.ardomus.ardovenation.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "836211987231-6bpek0gk0ekm8e034aqv0s8kfto88gaq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ardomus.ardovenation.debug",
-            "certificate_hash": "df21bb1e0e81065589f9935f48268d8d213779ae"
-          }
-        },
-        {
-          "client_id": "836211987231-sooc87t9ihiutvgcjad0rcrdq3uljnu2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDMlQekB3kfsVmNho4k2NBaj7lQzkXwZBA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "836211987231-sooc87t9ihiutvgcjad0rcrdq3uljnu2.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "836211987231-9j9it4dcpafmfqs9prfne3nrj8qah60j.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ardomus.ArdoVenation-Dev"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:836211987231:android:4239922f9825319b33562a",
+        "mobilesdk_app_id": "1:598247517177:android:cfc00c218c5b2ed73ceb28",
         "android_client_info": {
           "package_name": "com.hackathon.hikoo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "836211987231-av5deio2r13f3s1mb4dj8bpn8jfamclp.apps.googleusercontent.com",
+          "client_id": "598247517177-3fnddhq73u2678iflce8h73e4o9f32js.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hackathon.hikoo",
-            "certificate_hash": "df21bb1e0e81065589f9935f48268d8d213779ae"
+            "certificate_hash": "76edf0f104d4c395e0b7feda6ba9561e3e3adbf5"
           }
         },
         {
-          "client_id": "836211987231-sooc87t9ihiutvgcjad0rcrdq3uljnu2.apps.googleusercontent.com",
+          "client_id": "598247517177-mtkor64e73j26pfgtor35jkqnllc61ri.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDMlQekB3kfsVmNho4k2NBaj7lQzkXwZBA"
+          "current_key": "AIzaSyCrpajMrbK8pOyMR_5HCkFKp00lXBkqIFM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "836211987231-sooc87t9ihiutvgcjad0rcrdq3uljnu2.apps.googleusercontent.com",
+              "client_id": "598247517177-mtkor64e73j26pfgtor35jkqnllc61ri.apps.googleusercontent.com",
               "client_type": 3
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598247517177:android:7b3229c84e207a5e3ceb28",
+        "android_client_info": {
+          "package_name": "io.hikoo.testsns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598247517177-mtkor64e73j26pfgtor35jkqnllc61ri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrpajMrbK8pOyMR_5HCkFKp00lXBkqIFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
             {
-              "client_id": "836211987231-9j9it4dcpafmfqs9prfne3nrj8qah60j.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ardomus.ArdoVenation-Dev"
-              }
+              "client_id": "598247517177-mtkor64e73j26pfgtor35jkqnllc61ri.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         }

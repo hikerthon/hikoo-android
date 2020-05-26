@@ -1,14 +1,16 @@
 package com.hackathon.hikoo
 
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.WindowManager
 import androidx.annotation.ColorRes
-import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.hackathon.hikoo.view.router.Router
+import com.orhanobut.logger.Logger
 
-public abstract class BaseActivity: AppCompatActivity() {
+abstract class BaseActivity: AppCompatActivity(), Router.OnTransactionReadyCallback {
 
     private var isReadyTransaction = false
 
@@ -37,5 +39,25 @@ public abstract class BaseActivity: AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, color)
+    }
+
+    fun checkPermissions(permissions: MutableList<String>, requestCode: Int): Boolean {
+        permissions.forEach {
+            if (ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED) {
+                permissions.remove(it)
+            }
+        }
+
+        if (permissions.isNotEmpty()) {
+            val permissionArray = permissions.toTypedArray()
+            ActivityCompat.requestPermissions(this, permissionArray, requestCode)
+            return false
+        }
+
+        return true
+    }
+
+    override fun isReadyForTransaction(): Boolean {
+        return isReadyTransaction
     }
 }

@@ -4,6 +4,17 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_alpha_50">#80FFFFFF</color>
+    <color name="white_alpha_80">#CCFFFFFF</color>
     <color name="iris_blue">#00B4C1</color>
     <color name="eastern_blue">#007D9D</color>
+    <color name="eastern_blue_alpha">#80007D9D</color>
+    <color name="eclipse_black">#3A3A3A</color>
+    <color name="dim_gray">#707070</color>
+    <color name="dark_orange">#FF8800</color>
+    <color name="dark_gray">#AAAAAA</color>
+    <color name="british_racing_green">#005031</color>
+    <color name="suva_gray">#8D8D8D</color>
 </resources>

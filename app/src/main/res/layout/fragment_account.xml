@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/edit_account_bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/account_avatar"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="26dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_profile_icon" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/account_avatar"
+            app:layout_constraintStart_toStartOf="@+id/account_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/account_avatar"
+            tools:text="Tony Madden" />
+
+        <Space
+            android:id="@+id/account_space"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/account_name"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_gender_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_space"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_gender_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_gender_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_birthday_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date of Birth"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_gender_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_birthday_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_birthday_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_nationality_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nationality"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_birthday_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_nationality_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_nationality_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_id_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID Number/ Passport Number"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_nationality_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_id_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_id_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_phone_number_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobile Phone Number"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_id_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_phone_number_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_phone_number_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_telephone_number_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Satellite Telephone Number"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_phone_number_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_telephone_number_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_telephone_number_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_email_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E-Mail"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_telephone_number_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_email_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_email_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_contact_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emergency Contact Name"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_email_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_contact_name_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_contact_name_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/account_contact_phone_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emergency Contact Phone"
+            android:textColor="@color/white_alpha_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/account_contact_name_edittext"
+            app:layout_constraintStart_toStartOf="@+id/account_space"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/account_contact_phone_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white_alpha_50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="11dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/account_contact_phone_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

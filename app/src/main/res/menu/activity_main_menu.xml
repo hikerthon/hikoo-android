@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/separator_group"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:title="Import" />
+            android:id="@+id/separator_item"
+            android:title="Account"
+            android:visible="false" />
+    </group>
+
+    <group
+        android:id="@+id/first_group"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_permit"
+            android:title="My Mountain Permit"
+            android:icon="@drawable/ic_mountain_permit_menu"
+            app:actionLayout="@layout/drawer_view_action_layout"/>
         <item
-            android:id="@+id/nav_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_report"
+            android:title="My Event Report"
+            android:icon="@drawable/ic_event_report_menu"
+            app:actionLayout="@layout/drawer_view_action_layout"/>
     </group>
 </menu>

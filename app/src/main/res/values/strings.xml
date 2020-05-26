@@ -2,4 +2,7 @@
     <string name="app_name">Hikoo</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
+
+    <string name="notification_channel_message_title">Events</string>
+    <string name="notification_channel_message_description">Events from Hikoo</string>
 </resources>

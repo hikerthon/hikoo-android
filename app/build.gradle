@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -24,16 +25,20 @@ android {
         jvmTarget = "1.8"
     }
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    applicationVariants.all { variant ->
+        resValue('string', 'file_provider_authority', "${applicationId}.fileprovider")
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
@@ -41,6 +46,11 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Google
+    implementation "com.google.android.gms:play-services-location:17.0.0"
+    implementation "com.google.android.gms:play-services-maps:17.0.0"
+    implementation "com.google.maps.android:android-maps-utils:0.5"
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.15"
@@ -53,6 +63,7 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.7.0"
     implementation 'com.itkacher.okhttpprofiler:okhttpprofiler:1.0.5'
     implementation "com.squareup.okhttp3:logging-interceptor:3.12.0"
+    implementation "com.squareup.okhttp3:okhttp:4.2.2"
 
     // Moshi
     implementation "com.squareup.moshi:moshi:1.8.0"
@@ -77,11 +88,17 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.5"
     kapt 'androidx.room:room-compiler:2.2.5'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+    implementation 'com.google.firebase:firebase-core:17.4.2'
+    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.4.2'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
 
 kapt {
