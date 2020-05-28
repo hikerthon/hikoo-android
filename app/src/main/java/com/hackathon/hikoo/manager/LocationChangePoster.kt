@@ -14,5 +14,5 @@ class LocationChangePoster {
         return LatLng(this.latitude, this.longitude)
     }
 
-    class UserLocationChangeEvent(val location: Location, val latLng: LatLng)
+    class UserLocationChangeEvent(val location: Location, val latlng: LatLng)
 }

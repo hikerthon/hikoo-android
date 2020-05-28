@@ -1,7 +1,7 @@
 package com.hackathon.hikoo.network
 
+import android.location.Location
 import com.hackathon.hikoo.model.domain.*
-import com.hackathon.hikoo.model.entity.Location
 import com.hackathon.hikoo.model.entity.RequestResult
 import com.squareup.moshi.Moshi
 import io.reactivex.Observable
@@ -13,13 +13,21 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 abstract class APIManager(
     private val httpClient: HttpClient,
-    private val moshi: Moshi
+    val moshi: Moshi
 ) {
     companion object {
         private const val BASE_URL = "http://18.177.114.248:3001"
+//        private const val BASE_URL = "http://192.168.11.59:3001"
+//        private const val BASE_URL = "http://192.168.11.34:3001"
     }
 
     protected lateinit var hikooService: HikooService
+
+    fun setHeaderToken(token: String?, refreshToken: String?) {
+        val accessToken = token ?: ""
+        val userRefreshToken = refreshToken ?: ""
+        httpClient.setWeMoAccessToken(accessToken, userRefreshToken)
+    }
 
     fun createArdoVenationService(): HikooService {
         val client = httpClient.createHttpClient()
@@ -39,15 +47,18 @@ abstract class APIManager(
         return serviceCreate
     }
 
-    abstract fun getPermitByUser(userId: Int, type: String): Observable<Response<Permit>>
-    abstract fun getPermit(userId: Int, permitId: Int, type: String): Observable<Response<Permit>>
     abstract fun getAlert(): Observable<Response<List<Alert>>>
-    abstract fun getEvent(userId: Int): Observable<Response<List<Event>>>
-    abstract fun postEvent(userId: Int, event: Event): Observable<Response<RequestResult>>
-    abstract fun postLocation(userId: Int, lat: Double, lng: Double): Observable<Response<Location>>
-    abstract fun postSOS(userId: Int, lat: Double, lng: Double): Observable<Response<RequestResult>>
-    abstract fun getUser(userId: Int): Observable<Response<User>>
-    abstract fun putUser(userId: Int, user: User): Observable<Response<User>>
-    abstract fun getShelter(userId: Int): Observable<Response<List<Shelter>>>
+    abstract fun postLogin(email: String, password: String): Observable<Response<LoginInfo>>
+    abstract fun getUserProfile(): Observable<Response<User>>
+    abstract fun putUser(user: User): Observable<Response<RequestResult>>
+    abstract fun postUser(user: User): Observable<Response<RequestResult>>
+    abstract fun getEvent(): Observable<Response<List<Event>>>
+    abstract fun postEvent(event: EventReport): Observable<Response<RequestResult>>
+    abstract fun postUploadImage(image: String): Observable<Response<RequestResult>>
+    abstract fun postLocation(userId: Int, location: Location): Observable<Triple<Boolean, Locations, Error?>>
+    abstract fun postSOS(lat: Double?, lng: Double?): Observable<Response<RequestResult>>
+    abstract fun getShelter(lat: Double?, lng: Double?): Observable<Response<List<Shelter>>>
+    abstract fun getPermitById(permitId: Int, type: String): Observable<Response<MountainPermit>>
+    abstract fun getPermit(type: String = "All"): Observable<Response<List<MountainPermit>>>
 
 }

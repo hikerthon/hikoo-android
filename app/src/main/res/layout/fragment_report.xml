@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/report_bg"
+    android:background="@drawable/app_start_bg"
     tools:context=".eventreport.EventReportFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/report_list"
+        android:id="@+id/event_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"

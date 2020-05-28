@@ -1,6 +1,7 @@
 package com.hackathon.hikoo.network
 
 import com.hackathon.hikoo.BuildConfig
+import com.hackathon.hikoo.model.domain.LoginInfo
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -12,7 +13,9 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-class HttpClient {
+class HttpClient(
+    private val tokenInterceptor: TokenInterceptor
+) {
 
     companion object {
         @JvmField
@@ -24,6 +27,11 @@ class HttpClient {
     private val maxRetryAuthenticateTimes = 3
 
     private val client: OkHttpClient = createHttpClient()
+
+    var accessToken: String? = null
+        private set
+    var refreshToken: String? = null
+        private set
 
     fun createHttpClient(): OkHttpClient {
 
@@ -41,6 +49,8 @@ class HttpClient {
             .callTimeout(timeout, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
 
+        httpClientBuilder.addNetworkInterceptor(tokenInterceptor)
+
         if (BuildConfig.DEBUG) {
             httpClientBuilder.addInterceptor(OkHttpProfilerInterceptor())
             httpClientBuilder.addNetworkInterceptor(HttpLoggingInterceptor().apply {
@@ -51,4 +61,16 @@ class HttpClient {
         return httpClientBuilder.build()
     }
 
+    fun setWeMoAccessToken(accessToken: String, refreshToken: String) {
+        this.accessToken = accessToken
+        this.refreshToken = refreshToken
+        tokenInterceptor.setAccessToken(accessToken)
+    }
+
+    fun cancelConnections() {
+        client.dispatcher.cancelAll()
+    }
+
+    class TokenRefreshedEvent(val loginInfo: LoginInfo)
+    class TokenRefreshFailedEvent
 }

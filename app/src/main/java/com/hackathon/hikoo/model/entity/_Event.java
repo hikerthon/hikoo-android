@@ -29,7 +29,7 @@ public class _Event {
 	protected String eventInfo;
 
 	@Json(name = "eventTime")
-	protected String eventTime;
+	protected long eventTime;
 
 	@Json(name = "hikerId")
 	protected int hikerId;
@@ -110,11 +110,11 @@ public class _Event {
 		return eventInfo;
 	}
 
-	public void setEventTime(String eventTime){
+	public void setEventTime(long eventTime){
 		this.eventTime = eventTime;
 	}
 
-	public String getEventTime(){
+	public long getEventTime(){
 		return eventTime;
 	}
 

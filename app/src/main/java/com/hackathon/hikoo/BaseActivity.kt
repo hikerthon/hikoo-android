@@ -1,22 +1,28 @@
 package com.hackathon.hikoo
 
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.model.LatLng
+import com.hackathon.hikoo.service.GlobalEventReceiver
 import com.hackathon.hikoo.view.router.Router
 import com.orhanobut.logger.Logger
 
-abstract class BaseActivity: AppCompatActivity(), Router.OnTransactionReadyCallback {
+abstract class BaseActivity: AppCompatActivity(), Router.OnTransactionReadyCallback,
+    GlobalEventReceiver.GlobalEventListener {
 
     private var isReadyTransaction = false
 
+    private var globalEventReceiver: GlobalEventReceiver? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        globalEventReceiver = GlobalEventReceiver(this)
         isReadyTransaction = true
     }
 
@@ -25,9 +31,21 @@ abstract class BaseActivity: AppCompatActivity(), Router.OnTransactionReadyCallb
         isReadyTransaction = true
     }
 
+    override fun onPause() {
+        super.onPause()
+        globalEventReceiver?.isListening = false
+    }
+
     override fun onResume() {
         super.onResume()
         isReadyTransaction = true
+        globalEventReceiver?.isListening = true
+    }
+
+    override fun onDestroy() {
+        globalEventReceiver!!.removeListener()
+        globalEventReceiver = null
+        super.onDestroy()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -55,6 +73,10 @@ abstract class BaseActivity: AppCompatActivity(), Router.OnTransactionReadyCallb
         }
 
         return true
+    }
+
+    override fun onUserLocationChanged(location: Location, latlng: LatLng) {
+
     }
 
     override fun isReadyForTransaction(): Boolean {

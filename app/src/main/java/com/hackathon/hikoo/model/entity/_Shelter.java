@@ -4,27 +4,27 @@ import com.squareup.moshi.Json;
 
 public class _Shelter {
 
-	@Json(name = "name")
-	protected String name;
+	@Json(name = "shelterName")
+	protected String shelterName;
 
 	@Json(name = "id")
 	protected int id;
 
 	@Json(name = "latpt")
-	protected long latpt;
+	protected double latpt;
 
 	@Json(name = "lngpt")
-	protected long lngpt;
+	protected double lngpt;
 
 	@Json(name = "capacity")
 	protected int capacity;
 
-	public void setName(String name){
-		this.name = name;
+	public void setShelterName(String shelterName){
+		this.shelterName = shelterName;
 	}
 
-	public String getName(){
-		return name;
+	public String getShelterName(){
+		return shelterName;
 	}
 
 	public void setId(int id){
@@ -35,19 +35,19 @@ public class _Shelter {
 		return id;
 	}
 
-	public void setLatpt(long latpt){
+	public void setLatpt(double latpt){
 		this.latpt = latpt;
 	}
 
-	public long getLatpt(){
+	public double getLatpt(){
 		return latpt;
 	}
 
-	public void setLngpt(long lngpt){
+	public void setLngpt(double lngpt){
 		this.lngpt = lngpt;
 	}
 
-	public long getLngpt(){
+	public double getLngpt(){
 		return lngpt;
 	}
 

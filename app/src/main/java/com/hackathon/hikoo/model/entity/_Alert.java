@@ -1,8 +1,12 @@
 package com.hackathon.hikoo.model.entity;
 
+import java.util.List;
 import com.squareup.moshi.Json;
 
 public class _Alert {
+
+	@Json(name = "attachments")
+	protected List<String> attachments;
 
 	@Json(name = "alertLevelId")
 	protected int alertLevelId;
@@ -10,14 +14,20 @@ public class _Alert {
 	@Json(name = "permitId")
 	protected int permitId;
 
+	@Json(name = "permitName")
+	protected String permitName;
+
 	@Json(name = "creatorId")
 	protected int creatorId;
 
-	@Json(name = "originEventId")
-	protected int originEventId;
+	@Json(name = "creatorName")
+	protected String creatorName;
 
 	@Json(name = "lngpt")
-	protected long lngpt;
+	protected double lngpt;
+
+	@Json(name = "alertLevelName")
+	protected String alertLevelName;
 
 	@Json(name = "eventTypeId")
 	protected int eventTypeId;
@@ -29,19 +39,27 @@ public class _Alert {
 	protected String eventEnd;
 
 	@Json(name = "eventTime")
-	protected String eventTime;
+	protected long eventTime;
+
+	@Json(name = "eventTypeName")
+	protected String eventTypeName;
 
 	@Json(name = "id")
 	protected int id;
 
 	@Json(name = "latpt")
-	protected long latpt;
+	protected double latpt;
 
 	@Json(name = "radius")
 	protected int radius;
 
-	@Json(name = "logtime")
-	protected String logtime;
+	public void setAttachments(List<String> attachments){
+		this.attachments = attachments;
+	}
+
+	public List<String> getAttachments(){
+		return attachments;
+	}
 
 	public void setAlertLevelId(int alertLevelId){
 		this.alertLevelId = alertLevelId;
@@ -59,6 +77,14 @@ public class _Alert {
 		return permitId;
 	}
 
+	public void setPermitName(String permitName){
+		this.permitName = permitName;
+	}
+
+	public String getPermitName(){
+		return permitName;
+	}
+
 	public void setCreatorId(int creatorId){
 		this.creatorId = creatorId;
 	}
@@ -67,20 +93,28 @@ public class _Alert {
 		return creatorId;
 	}
 
-	public void setOriginEventId(int originEventId){
-		this.originEventId = originEventId;
+	public void setCreatorName(String creatorName){
+		this.creatorName = creatorName;
 	}
 
-	public int getOriginEventId(){
-		return originEventId;
+	public String getCreatorName(){
+		return creatorName;
 	}
 
-	public void setLngpt(long lngpt){
+	public void setLngpt(double lngpt){
 		this.lngpt = lngpt;
 	}
 
-	public long getLngpt(){
+	public double getLngpt(){
 		return lngpt;
+	}
+
+	public void setAlertLevelName(String alertLevelName){
+		this.alertLevelName = alertLevelName;
+	}
+
+	public String getAlertLevelName(){
+		return alertLevelName;
 	}
 
 	public void setEventTypeId(int eventTypeId){
@@ -107,12 +141,20 @@ public class _Alert {
 		return eventEnd;
 	}
 
-	public void setEventTime(String eventTime){
+	public void setEventTime(long eventTime){
 		this.eventTime = eventTime;
 	}
 
-	public String getEventTime(){
+	public long getEventTime(){
 		return eventTime;
+	}
+
+	public void setEventTypeName(String eventTypeName){
+		this.eventTypeName = eventTypeName;
+	}
+
+	public String getEventTypeName(){
+		return eventTypeName;
 	}
 
 	public void setId(int id){
@@ -123,11 +165,11 @@ public class _Alert {
 		return id;
 	}
 
-	public void setLatpt(long latpt){
+	public void setLatpt(double latpt){
 		this.latpt = latpt;
 	}
 
-	public long getLatpt(){
+	public double getLatpt(){
 		return latpt;
 	}
 
@@ -137,13 +179,5 @@ public class _Alert {
 
 	public int getRadius(){
 		return radius;
-	}
-
-	public void setLogtime(String logtime){
-		this.logtime = logtime;
-	}
-
-	public String getLogtime(){
-		return logtime;
 	}
 }

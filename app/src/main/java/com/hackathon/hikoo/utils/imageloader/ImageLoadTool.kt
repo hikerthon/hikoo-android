@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 
-interface ImageLoader {
+interface ImageLoadTool {
     fun loadImage(context: Context, url: String?, targetView: ImageView, @DrawableRes placeHolder: Int = -1)
 
     fun loadCircleImage(context: Context, url: String?, targetView: ImageView, @DrawableRes placeHolder: Int = -1)

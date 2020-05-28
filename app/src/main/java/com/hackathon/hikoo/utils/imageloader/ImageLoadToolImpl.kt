@@ -3,21 +3,15 @@ package com.hackathon.hikoo.utils.imageloader
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.module.AppGlideModule
-import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor
-import okhttp3.OkHttpClient
-import java.io.InputStream
 
 @GlideModule
-class ImageLoaderImpl : AppGlideModule(), ImageLoader {
+class ImageLoadToolImpl : AppGlideModule(), ImageLoadTool {
 
     lateinit var context: Context
 

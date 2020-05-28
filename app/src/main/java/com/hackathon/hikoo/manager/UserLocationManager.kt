@@ -17,7 +17,8 @@ import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
 class UserLocationManager(
-    private val context: Context
+    private val context: Context,
+    private val sharePreferenceManager: SharePreferenceManager
 ) {
 
     enum class LocationManagerState {
@@ -105,7 +106,12 @@ class UserLocationManager(
 
     val locationObserver: BehaviorSubject<Location> = BehaviorSubject.create()
     var currentLocation: Location? = null
-        private set
+        private set(value) {
+            field = value
+            if (value != null) {
+                sharePreferenceManager.updateLocation(value)
+            }
+        }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun startLocationUpdate(failedCallback: OnLocationSettingFailedCallback) {
@@ -128,7 +134,9 @@ class UserLocationManager(
         if (isLocationPermissionGranted()) {
             state = LocationManagerState.CHECK_LAST_LOCATION
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                val lastLocation = location
+                val lastLocation = location ?: run {
+                    sharePreferenceManager.getLastLocation()
+                }
 
                 lastLocation?.let {
                     this@UserLocationManager.currentLocation = it
@@ -137,7 +145,10 @@ class UserLocationManager(
                 }
                 prepareListenAccurateLocation(providerType, failedCallback)
             }.addOnFailureListener { exception ->
-
+                sharePreferenceManager.getLastLocation()?.let {
+                    currentLocation = it
+                    locationObserver.onNext(it)
+                }
                 prepareListenAccurateLocation(providerType, failedCallback)
             }
         } else {

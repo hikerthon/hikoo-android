@@ -1,5 +1,6 @@
 package com.hackathon.hikoo.manager
 
+import android.content.Context
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -7,17 +8,18 @@ import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.hackathon.hikoo.R
 import com.hackathon.hikoo.model.domain.User
-import com.hackathon.hikoo.utils.imageloader.ImageLoaderImpl
+import com.hackathon.hikoo.utils.imageloader.ImageLoadToolImpl
 import com.hackathon.hikoo.view.AdvanceDrawerLayout
 import org.greenrobot.eventbus.EventBus
 
-class DrawerManager(private val imageLoader: ImageLoaderImpl) : NavigationView.OnNavigationItemSelectedListener,
+class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener {
 
     private var accountImageView: AppCompatImageView? = null
@@ -38,34 +40,15 @@ class DrawerManager(private val imageLoader: ImageLoaderImpl) : NavigationView.O
 
     fun setupDrawer(
         drawer: AdvanceDrawerLayout,
-        @IdRes navigationViewId: Int,
-        user: User?
+        @IdRes navigationViewId: Int
     ) {
-        this.user = user
-
         this.drawer = drawer
         navigationView = drawer.findViewById(navigationViewId)
         navigationView.setNavigationItemSelectedListener(this)
 
-        drawer.userCustomBehavior(Gravity.START)
-        drawer.userCustomBehavior(Gravity.END)
-
+        drawer.setRadius(Gravity.START, 40f)
+        drawer.setViewElevation(Gravity.START, 40f)
         setupHeaderView()
-        updateUserData()
-    }
-
-    fun setupCustomIndicator(toggle: ActionBarDrawerToggle) {
-        val imageView = AppCompatImageView(imageLoader.context)
-        imageView.setBackgroundResource(R.drawable.circle_border_shape)
-        toggle.isDrawerIndicatorEnabled = false
-        toggle.setHomeAsUpIndicator(R.drawable.circle_border_shape)
-        toggle.setToolbarNavigationClickListener {
-            if (drawer.isDrawerVisible(GravityCompat.START)) {
-                openDrawer(false)
-            } else {
-                openDrawer(true)
-            }
-        }
     }
 
     private fun setupHeaderView() {
@@ -81,15 +64,13 @@ class DrawerManager(private val imageLoader: ImageLoaderImpl) : NavigationView.O
         }
     }
 
-    private fun updateUserData() {
-        user?.let {
-            accountNameTextView?.text = ""
-            accountImageView?.let {
-                imageLoader.loadCircleImage("", it, R.drawable.ic_profile_icon)
-            }
+    fun updateUserData(user: User) {
+        this.user = user
+        accountNameTextView?.text = "${user.firstName} ${user.lastName}"
+        accountImageView?.let {
+            imageLoadTool.loadCircleImage(user.image, it, R.drawable.ic_profile_icon)
         }
     }
-
 
     fun release() {
         callback = null
@@ -145,6 +126,9 @@ class DrawerManager(private val imageLoader: ImageLoaderImpl) : NavigationView.O
             R.id.nav_report -> {
                 callback?.onDrawerMenuClickEventReportPage()
             }
+            R.id.nav_logout -> {
+                callback?.onDrawerMenuClickLogout()
+            }
             else -> return false
         }
         return item.isChecked
@@ -153,16 +137,15 @@ class DrawerManager(private val imageLoader: ImageLoaderImpl) : NavigationView.O
     override fun onClick(view: View) {
         openDrawer(false)
         if (view.id == R.id.header_linear_layout) {
-            callback?.onDrawerHeaderUserClicked(user)
-//            user?.let {
-//                callback?.onDrawerHeaderUserClicked(it)
-//            }
+            callback?.onDrawerHeaderUserClicked()
         }
     }
 
     interface onDrawerMenuClickListener {
         fun onDrawerMenuClickMountainPermitPage()
+        fun onDrawerMenuClickHikooPage()
         fun onDrawerMenuClickEventReportPage()
-        fun onDrawerHeaderUserClicked(user: User?)
+        fun onDrawerHeaderUserClicked()
+        fun onDrawerMenuClickLogout()
     }
 }

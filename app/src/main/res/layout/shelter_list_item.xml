@@ -3,39 +3,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shelter_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/marker_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:srcCompat="@drawable/ic_current_location"
+        android:id="@+id/shelter_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        app:srcCompat="@drawable/ic_current_location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <LinearLayout
-        android:id="@+id/marker_content"
+        android:id="@+id/shelter_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@+id/marker_icon"
-        app:layout_constraintTop_toTopOf="@id/marker_icon"
-        app:layout_constraintBottom_toBottomOf="@id/marker_icon"
-        app:layout_constraintEnd_toStartOf="@+id/marker_imageview">
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/shelter_icon"
+        app:layout_constraintTop_toTopOf="@id/shelter_icon"
+        app:layout_constraintBottom_toBottomOf="@id/shelter_icon"
+        app:layout_constraintEnd_toStartOf="@+id/shelter_imageview">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/marker_content_title"
+            android:id="@+id/shelter_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/suva_gray"
+            android:maxLines="1"
+            android:ellipsize="end"
             tools:text="My Current Location"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/marker_latlng"
+            android:id="@+id/shelter_latlng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -44,12 +48,13 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/marker_imageview"
+        android:id="@+id/shelter_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         app:srcCompat="@drawable/ic_arrow_right"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/marker_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/marker_icon"/>
+        app:layout_constraintTop_toTopOf="@+id/shelter_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/shelter_icon"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

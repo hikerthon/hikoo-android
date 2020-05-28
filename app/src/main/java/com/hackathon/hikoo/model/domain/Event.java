@@ -22,13 +22,12 @@ public class Event extends _Event implements Parcelable {
         dest.writeInt(this.ttl);
         dest.writeLong(this.lng);
         dest.writeString(this.eventInfo);
-        dest.writeString(this.eventTime);
+        dest.writeLong(this.eventTime);
         dest.writeInt(this.hikerId);
         dest.writeInt(this.alertId);
         dest.writeInt(this.radius);
         dest.writeLong(this.lat);
         dest.writeInt(this.status);
-
     }
 
     public Event() {}
@@ -42,7 +41,7 @@ public class Event extends _Event implements Parcelable {
         this.ttl = in.readInt();
         this.lng = in.readLong();
         this.eventInfo = in.readString();
-        this.eventTime = in.readString();
+        this.eventTime = in.readLong();
         this.hikerId = in.readInt();
         this.alertId = in.readInt();
         this.radius = in.readInt();
