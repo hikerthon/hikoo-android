@@ -1,6 +1,7 @@
 package com.hackathon.hikoo.alert
 
 import android.os.Bundle
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import com.google.android.material.textview.MaterialTextView
 import com.hackathon.hikoo.BaseActivity
@@ -8,6 +9,8 @@ import com.hackathon.hikoo.R
 import com.hackathon.hikoo.model.domain.Alert
 import com.hackathon.hikoo.utils.DateUtils
 import com.hackathon.hikoo.utils.bindView
+import com.hackathon.hikoo.utils.imageloader.ImageLoadToolImpl
+import org.koin.android.ext.android.inject
 
 class AlertDetailActivity : BaseActivity() {
 
@@ -20,6 +23,9 @@ class AlertDetailActivity : BaseActivity() {
     private val alertTitle: MaterialTextView by bindView(R.id.alert_title)
     private val alertLevel: MaterialTextView by bindView(R.id.alert_level)
     private val alertDescription: MaterialTextView by bindView(R.id.alert_description)
+    private val alertImage: AppCompatImageView by bindView(R.id.alert_image)
+
+    private val imageLoadTool: ImageLoadToolImpl by inject()
 
     private var alert: Alert? = null
 
@@ -58,6 +64,10 @@ class AlertDetailActivity : BaseActivity() {
                 else ->{}
             }
             alertDescription.text = it.eventInfo
+
+            if (it.attachments.isNotEmpty()) {
+                imageLoadTool.loadImage(this, it.attachments[0], alertImage, -1)
+            }
         }
     }
 }

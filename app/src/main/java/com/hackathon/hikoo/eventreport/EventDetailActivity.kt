@@ -54,7 +54,9 @@ class EventDetailActivity : AppCompatActivity() {
                 Event.EventType.SOS -> "SOS"
                 else -> "unknown"
             }
-            imageLoadTool.loadImage(this, event.attachments[0], eventImage, -1)
+            if (event.attachments.isNotEmpty()) {
+                imageLoadTool.loadImage(this, event.attachments[0], eventImage, -1)
+            }
             eventDate.text = DateUtils.getFormattedTimeAndDate(it.eventTime)
             eventType.text = "Event Type : ${it.eventTypeName}"
             eventDescription.text = it.eventInfo
