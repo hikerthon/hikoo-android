@@ -130,7 +130,7 @@ class UserManager(
             onNext = { response ->
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        this.mountainPermit = it[0]
+                        this.mountainPermit = it.last()
                     }
                 }
             },

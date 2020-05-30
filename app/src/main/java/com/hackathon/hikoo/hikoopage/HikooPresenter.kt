@@ -102,6 +102,12 @@ class HikooPresenter(
 
         apiManager.postSOS(location?.latitude, location?.longitude).subscribeBy(
             onNext = { response ->
+                if (response.code() == 403) {
+                    Logger.d("showSOSFailedReason = ${response.errorBody()}")
+                    view?.showSOSFailedReason("User doesnt have active hiking permit")
+                    return@subscribeBy
+                }
+
                 if (response.isSuccessful) {
                     view?.showSOSSuccess()
                 }

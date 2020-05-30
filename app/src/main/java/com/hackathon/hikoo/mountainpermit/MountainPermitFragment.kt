@@ -1,5 +1,6 @@
 package com.hackathon.hikoo.mountainpermit
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -38,7 +39,12 @@ class MountainPermitFragment : Fragment(), IMountainPermit, MountainPermitAdapte
     }
 
     override fun onMountainPermitItemClicked(permit: MountainPermit) {
-
+        val context = context ?: return
+        val intent = Intent(context, MountainPermitDetail::class.java)
+        val bundle = Bundle()
+        bundle.putParcelable(MountainPermitDetail.MOUNTAIN_PERMIT, permit)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun setupPermitList(list: List<MountainPermit>) {

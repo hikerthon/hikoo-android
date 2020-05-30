@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.core.app.NotificationCompat
@@ -59,6 +60,7 @@ class HikooFirebaseMessagingService: FirebaseMessagingService() {
             }
 
             sendNotification(remoteNotification!!)
+            sendLocalBroadcast(remoteNotification)
             vibrateDevice(1000)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -67,9 +69,20 @@ class HikooFirebaseMessagingService: FirebaseMessagingService() {
         }
     }
 
+    private fun sendLocalBroadcast(remoteNotification: RemoteMessage.Notification) {
+        val title = remoteNotification.title
+        val body = remoteNotification.body
+        val intent = Intent("Hikoo")
+        val bundle = Bundle()
+        bundle.putString("Title", title)
+        bundle.putString("Body", body)
+        intent.putExtras(bundle)
+        localBroadcastManager?.sendBroadcast(intent)
+    }
+
     private fun createNotificationHeader() {
         val headerNotificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-        headerNotificationBuilder.color = ContextCompat.getColor(this, R.color.iris_blue)
+        headerNotificationBuilder.color = ContextCompat.getColor(this, R.color.british_racing_green)
         headerNotificationBuilder.setContentTitle("Hikoo")
         headerNotificationBuilder.setGroupSummary(true)
         headerNotificationBuilder.setGroup(NOTIFICATION_GROUP_ID)
@@ -97,7 +110,7 @@ class HikooFirebaseMessagingService: FirebaseMessagingService() {
             val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, channelTitle, NotificationManager.IMPORTANCE_DEFAULT)
             notificationChannel.description = channelDescription
             notificationChannel.enableLights(true)
-            notificationChannel.lightColor = ContextCompat.getColor(this, R.color.iris_blue)
+            notificationChannel.lightColor = ContextCompat.getColor(this, R.color.british_racing_green)
             notificationChannel.group = NOTIFICATION_GROUP_ID
             notificationChannel.setShowBadge(true)
             notificationManager?.createNotificationChannelGroup(

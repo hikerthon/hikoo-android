@@ -180,41 +180,42 @@ class NewEventActivity : BaseActivity(),
 
     private fun openAlertTypeChooseDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Choose alert type")
-            .setItems(arrayOf("Wild Animal", "Item Found", "Blocked Route")) { dialog, which ->
+            .setTitle("Choose event type")
+            .setItems(arrayOf("Information", "Caution", "Danger")) { dialog, which ->
                 presenter.eventReport?.alertLevelId = which + 1
                 dialog.dismiss()
                 when (which) {
                     0 -> {
-                        alertTypeChoose.text = "Wild Animal"
+                        alertTypeChoose.text = "Information"
                     }
                     1 -> {
-                        alertTypeChoose.text = "Item Found"
+                        alertTypeChoose.text = "Caution"
                     }
                     2 -> {
-                        alertTypeChoose.text = "Blocked Route"
+                        alertTypeChoose.text = "Danger"
                     }
                 }
             }
             .create()
             .show()
+
     }
 
     private fun openEventTypeChooseDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Choose event type")
-            .setItems(arrayOf("Information", "Caution", "Danger")) { dialog, which ->
+            .setTitle("Choose alert type")
+            .setItems(arrayOf("Wild Animal", "Item Found", "Blocked Route")) { dialog, which ->
                 presenter.eventReport?.eventTypeId = which + 1
                 dialog.dismiss()
                 when (which) {
                     0 -> {
-                        eventTypeChoose.text = "Information"
+                        eventTypeChoose.text = "Wild Animal"
                     }
                     1 -> {
-                        eventTypeChoose.text = "Caution"
+                        eventTypeChoose.text = "Item Found"
                     }
                     2 -> {
-                        eventTypeChoose.text = "Danger"
+                        eventTypeChoose.text = "Blocked Route"
                     }
                 }
             }

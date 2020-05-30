@@ -54,8 +54,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@drawable/background_with_corner4"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
@@ -165,7 +166,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/eclipse_black"
-                tools:text="Mountain Climbing"/>
+                android:text="Mountain Climbing"/>
 
             <View
                 android:layout_width="match_parent"
@@ -217,7 +218,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/eclipse_black"
-                tools:text="Yushan East Cliff"/>
+                android:text="Yushan East Cliff"/>
 
             <View
                 android:layout_width="match_parent"
@@ -240,8 +241,6 @@
                 android:layout_marginTop="4dp"
                 android:textSize="16sp"
                 android:layout_marginEnd="16dp"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:textColor="@color/eclipse_black"
                 tools:text="1. East Cliff Circular Cut"/>
 
@@ -298,7 +297,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/eclipse_black"
-                tools:text="Click to see roster list"/>
+                android:text="Click to see roster list"/>
 
             <View
                 android:layout_width="match_parent"

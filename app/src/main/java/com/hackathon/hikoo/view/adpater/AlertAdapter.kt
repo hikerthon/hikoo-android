@@ -37,7 +37,7 @@ class AlertAdapter(
         val alertItem = item[position]
 
         holder.alertDate.text = DateUtils.getFormattedTimeAndDate(alertItem.eventTime)
-        holder.alertTitle.text = alertItem.eventInfo
+        holder.alertTitle.text = alertItem.eventTypeName
 
         setAlertLevel(holder, alertItem)
     }

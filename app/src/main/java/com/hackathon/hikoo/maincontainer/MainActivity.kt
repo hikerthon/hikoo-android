@@ -58,9 +58,23 @@ class MainActivity : BaseActivity(),
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val intentAction = intent.action
-            Logger.d("broadcastReceiver = $intentAction")
+            val title = intent.getStringExtra("Title")
+            val body = intent.getStringExtra("Body")
+
+            showNotificationDialog(title, body)
         }
+    }
+
+    private fun showNotificationDialog(title: String?, body: String?) {
+        AlertDialog.Builder(this)
+            .setCancelable(false)
+            .setTitle("Warning")
+            .setMessage(body)
+            .setPositiveButton("Got it") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +95,7 @@ class MainActivity : BaseActivity(),
 
     override fun onDestroy() {
         drawerManager.release()
+        router.release()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver)
         super.onDestroy()
     }
@@ -171,7 +186,18 @@ class MainActivity : BaseActivity(),
 
     override fun onDrawerMenuClickLogout() {
         drawerItemClickLock.doTimerLockAction {
-            presenter.logout()
+            AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure want to logout?")
+                .setPositiveButton("Logout") { dialog, which ->
+                    dialog.dismiss()
+                    presenter.logout()
+                }
+                .setNegativeButton("Cancel") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .create()
+                .show()
         }
     }
 
@@ -230,13 +256,15 @@ class MainActivity : BaseActivity(),
         ){}
         navigationToggle.syncState()
         drawerManager.lockDrawer(false)
-        drawerLayout.addDrawerListener(navigationToggle)
-        drawerManager.navigationView.itemIconTintList = null
+        drawerLayout?.addDrawerListener(navigationToggle)
+        drawerManager.navigationView?.itemIconTintList = null
         toolbar.navigationIcon = null
     }
 
     override fun startListeningUserStateChange() {
-        val intentFilter = IntentFilter()
+        val intentFilter = IntentFilter().apply {
+            addAction("Hikoo")
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter)
     }
 
@@ -244,6 +272,7 @@ class MainActivity : BaseActivity(),
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
+        finish()
     }
 
     override fun updateDrawer(user: User?, drawerManager: DrawerManager, imageLoadTool: ImageLoadTool) {
@@ -270,11 +299,7 @@ class MainActivity : BaseActivity(),
         AlertDialog.Builder(this)
             .setTitle("Result")
             .setMessage("Check out is successful")
-            .setPositiveButton("CheckOut") { dialog, which ->
-                dialog.dismiss()
-                presenter.checkOutPermit()
-            }
-            .setNegativeButton("Cancel") { dialog, which ->
+            .setPositiveButton("OK") { dialog, which ->
                 dialog.dismiss()
             }
             .create()

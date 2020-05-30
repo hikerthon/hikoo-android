@@ -219,12 +219,13 @@ class HikooFragment : Fragment(), IHikoo,
         val dialog = AlertDialog.Builder(context)
             .setTitle("Failed")
             .setMessage("Send SOS failed \n Please retry")
-            .setPositiveButton("Cancel") { dialog, which ->
-                dialog.dismiss()
-            }
-            .setNegativeButton("Retry") { dialog, which ->
+            .setPositiveButton("Retry") { dialog, which ->
                 dialog.dismiss()
                 presenter.sendSOS()
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+
             }
             .create()
         dialog.setOnShowListener {
@@ -236,6 +237,28 @@ class HikooFragment : Fragment(), IHikoo,
         dialog.show()
     }
 
+    override fun showSOSFailedReason(errorMessage: String?) {
+        val context = context ?: return
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("Failed")
+            .setMessage(errorMessage)
+            .setPositiveButton("Retry") { dialog, which ->
+                dialog.dismiss()
+                presenter.sendSOS()
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+
+            }
+            .create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context, R.color.eastern_blue))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.eastern_blue))
+        }
+        dialog.show()
+    }
     //endregion
 
 }

@@ -34,7 +34,13 @@ class EventAdapter(
         val eventItem = item[position]
 
         holder.eventDate.text = DateUtils.getFormattedTimeAndDate(eventItem.eventTime)
-        holder.eventTitle.text = eventItem.eventInfo
+        holder.eventTitle.text = when (eventItem.eventType) {
+            Event.EventType.WILD_ANIMAL -> "Wild Animal"
+            Event.EventType.ITEM_FOUND -> "Item Found"
+            Event.EventType.BLOCKED_ROUTE -> "Blocked route"
+            Event.EventType.SOS -> "SOS"
+            else -> "unknown"
+        }
      }
 
     inner class EventItemViewHolder(itemView: View, callback: EventItemCallback?) : RecyclerView.ViewHolder(itemView) {

@@ -13,4 +13,5 @@ interface IHikoo: IBase {
     fun setupShelterMarker(shelter: Shelter)
     fun showSOSSuccess()
     fun showSOSFailed()
+    fun showSOSFailedReason(errorMessage: String?)
 }

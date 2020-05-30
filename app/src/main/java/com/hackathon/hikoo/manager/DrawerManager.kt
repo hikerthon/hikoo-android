@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -26,17 +27,15 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
     private var accountNameTextView: MaterialTextView? = null
     private var accountLinearLayout: LinearLayout? = null
 
-    private lateinit var headerView: View
+    private var headerView: View? = null
 
     private var user: User? = null
 
     var callback: onDrawerMenuClickListener? = null
 
-    lateinit var drawer: AdvanceDrawerLayout
-        private set
+    var drawer: AdvanceDrawerLayout? = null
 
-    lateinit var navigationView: NavigationView
-        private set
+    var navigationView: NavigationView? = null
 
     fun setupDrawer(
         drawer: AdvanceDrawerLayout,
@@ -44,7 +43,7 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
     ) {
         this.drawer = drawer
         navigationView = drawer.findViewById(navigationViewId)
-        navigationView.setNavigationItemSelectedListener(this)
+        navigationView?.setNavigationItemSelectedListener(this)
 
         drawer.setRadius(Gravity.START, 40f)
         drawer.setViewElevation(Gravity.START, 40f)
@@ -52,14 +51,13 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
     }
 
     private fun setupHeaderView() {
-        navigationView.let {
+        navigationView?.let {
             headerView = it.inflateHeaderView(R.layout.drawer_header)
-            headerView.apply {
+            headerView?.apply {
                 accountImageView = findViewById(R.id.header_avatar)
                 accountNameTextView = findViewById(R.id.header_name)
                 accountLinearLayout = findViewById(R.id.header_linear_layout)
                 accountLinearLayout?.setOnClickListener(this@DrawerManager)
-//                EventBus.getDefault().register(this@DrawerManager)
             }
         }
     }
@@ -76,21 +74,27 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
 
     fun release() {
         callback = null
+        accountImageView = null
+        accountNameTextView = null
+        accountLinearLayout = null
+        drawer = null
+        headerView = null
+        navigationView = null
         EventBus.getDefault().unregister(this@DrawerManager)
     }
 
     fun isDrawerOpened(): Boolean {
-        return drawer.run { isDrawerOpen(GravityCompat.START) }
+        return drawer?.run { isDrawerOpen(GravityCompat.START) } ?: false
     }
 
     fun isDrawerLocked(): Boolean {
-        return drawer.run {
+        return drawer?.run {
             getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED
-        }
+        } ?: false
     }
 
     fun lockDrawer(lock: Boolean) {
-        drawer.run {
+        drawer?.run {
             if (lock && !isDrawerLocked()) {
                 setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 return
@@ -103,7 +107,7 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
     }
 
     fun openDrawer(open: Boolean) {
-        drawer.run {
+        drawer?.run {
             if (open && !isDrawerOpened()) {
                 openDrawer(GravityCompat.START)
                 return
@@ -116,7 +120,7 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
     }
 
     fun checkMenuOption(@IdRes menuResId: Int) {
-        navigationView.menu.findItem(menuResId)?.isChecked = true
+        navigationView?.menu?.findItem(menuResId)?.isChecked = true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -40,7 +40,6 @@ class EventReportFragment : Fragment(), IEventReport, EventAdapter.EventItemCall
         (activity as? MainActivity)?.setActionBarTitle(R.string.event_report)
         retrieveViews(view)
         addListener()
-        presenter.fetchEvent()
     }
 
     override fun onResume() {

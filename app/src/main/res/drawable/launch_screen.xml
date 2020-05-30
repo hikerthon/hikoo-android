@@ -4,7 +4,7 @@
         <bitmap android:src="@drawable/app_start_bg"/>
     </item>
     <item>
-        <bitmap android:src="@drawable/logo_with_name"
+        <bitmap android:src="@drawable/hikoo_splash_logo"
             android:gravity="center"
             android:tileMode="disabled"/>
     </item>

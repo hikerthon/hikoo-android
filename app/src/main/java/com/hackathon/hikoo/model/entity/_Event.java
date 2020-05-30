@@ -1,29 +1,30 @@
 package com.hackathon.hikoo.model.entity;
 
+import java.util.List;
 import com.squareup.moshi.Json;
 
 public class _Event {
 
-	@Json(name = "eventId")
-	protected int eventId;
+	@Json(name = "stat")
+	protected String stat;
+
+	@Json(name = "attachments")
+	protected List<String> attachments;
+
+	@Json(name = "alertLevelId")
+	protected int alertLevelId;
 
 	@Json(name = "hikeId")
 	protected int hikeId;
 
-	@Json(name = "alertLevel")
-	protected String alertLevel;
+	@Json(name = "lngpt")
+	protected double lngpt;
 
-	@Json(name = "reporter")
-	protected String reporter;
+	@Json(name = "reporterName")
+	protected String reporterName;
 
-	@Json(name = "eventType")
-	protected String eventType;
-
-	@Json(name = "ttl")
-	protected int ttl;
-
-	@Json(name = "long")
-	protected long lng;
+	@Json(name = "eventTypeId")
+	protected int eventTypeId;
 
 	@Json(name = "eventInfo")
 	protected String eventInfo;
@@ -31,27 +32,46 @@ public class _Event {
 	@Json(name = "eventTime")
 	protected long eventTime;
 
-	@Json(name = "hikerId")
-	protected int hikerId;
+	@Json(name = "eventTypeName")
+	protected String eventTypeName;
 
-	@Json(name = "alertId")
-	protected int alertId;
+	@Json(name = "reporterId")
+	protected int reporterId;
+
+	@Json(name = "id")
+	protected int id;
+
+	@Json(name = "latpt")
+	protected double latpt;
 
 	@Json(name = "radius")
 	protected int radius;
 
-	@Json(name = "lat")
-	protected long lat;
+	@Json(name = "logtime")
+	protected long logtime;
 
-	@Json(name = "status")
-	protected int status;
-
-	public void setEventId(int eventId){
-		this.eventId = eventId;
+	public void setStat(String stat){
+		this.stat = stat;
 	}
 
-	public int getEventId(){
-		return eventId;
+	public String getStat(){
+		return stat;
+	}
+
+	public void setAttachments(List<String> attachments){
+		this.attachments = attachments;
+	}
+
+	public List<String> getAttachments(){
+		return attachments;
+	}
+
+	public void setAlertLevelId(int alertLevelId){
+		this.alertLevelId = alertLevelId;
+	}
+
+	public int getAlertLevelId(){
+		return alertLevelId;
 	}
 
 	public void setHikeId(int hikeId){
@@ -62,44 +82,28 @@ public class _Event {
 		return hikeId;
 	}
 
-	public void setAlertLevel(String alertLevel){
-		this.alertLevel = alertLevel;
+	public void setLngpt(double lngpt){
+		this.lngpt = lngpt;
 	}
 
-	public String getAlertLevel(){
-		return alertLevel;
+	public double getLngpt(){
+		return lngpt;
 	}
 
-	public void setReporter(String reporter){
-		this.reporter = reporter;
+	public void setReporterName(String reporterName){
+		this.reporterName = reporterName;
 	}
 
-	public String getReporter(){
-		return reporter;
+	public String getReporterName(){
+		return reporterName;
 	}
 
-	public void setEventType(String eventType){
-		this.eventType = eventType;
+	public void setEventTypeId(int eventTypeId){
+		this.eventTypeId = eventTypeId;
 	}
 
-	public String getEventType(){
-		return eventType;
-	}
-
-	public void setTtl(int ttl){
-		this.ttl = ttl;
-	}
-
-	public int getTtl(){
-		return ttl;
-	}
-
-	public void setLng(long lng){
-		this.lng = lng;
-	}
-
-	public long getLng(){
-		return lng;
+	public int getEventTypeId(){
+		return eventTypeId;
 	}
 
 	public void setEventInfo(String eventInfo){
@@ -118,20 +122,36 @@ public class _Event {
 		return eventTime;
 	}
 
-	public void setHikerId(int hikerId){
-		this.hikerId = hikerId;
+	public void setEventTypeName(String eventTypeName){
+		this.eventTypeName = eventTypeName;
 	}
 
-	public int getHikerId(){
-		return hikerId;
+	public String getEventTypeName(){
+		return eventTypeName;
 	}
 
-	public void setAlertId(int alertId){
-		this.alertId = alertId;
+	public void setReporterId(int reporterId){
+		this.reporterId = reporterId;
 	}
 
-	public int getAlertId(){
-		return alertId;
+	public int getReporterId(){
+		return reporterId;
+	}
+
+	public void setId(int id){
+		this.id = id;
+	}
+
+	public int getId(){
+		return id;
+	}
+
+	public void setLatpt(double latpt){
+		this.latpt = latpt;
+	}
+
+	public double getLatpt(){
+		return latpt;
 	}
 
 	public void setRadius(int radius){
@@ -142,19 +162,11 @@ public class _Event {
 		return radius;
 	}
 
-	public void setLat(long lat){
-		this.lat = lat;
+	public void setLogtime(long logtime){
+		this.logtime = logtime;
 	}
 
-	public long getLat(){
-		return lat;
-	}
-
-	public void setStatus(int status){
-		this.status = status;
-	}
-
-	public int getStatus(){
-		return status;
+	public long getLogtime(){
+		return logtime;
 	}
 }

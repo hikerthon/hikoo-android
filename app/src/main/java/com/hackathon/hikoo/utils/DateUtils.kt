@@ -17,7 +17,7 @@ object DateUtils {
 
     fun getDate(timestamp: Long, patten: String) :String {
         val simpleDateFormat = SimpleDateFormat(patten, Locale.ENGLISH).also {
-            it.timeZone = TimeZone.getTimeZone("UTC")
+            it.timeZone = TimeZone.getTimeZone("Asia/Taipei")
         }
 
         return simpleDateFormat.format(Date(timestamp))

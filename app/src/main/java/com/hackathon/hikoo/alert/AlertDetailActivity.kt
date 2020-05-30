@@ -41,7 +41,7 @@ class AlertDetailActivity : BaseActivity() {
     private fun setupAlertDetail(alert: Alert?) {
         alert?.let {
             alertDate.text = DateUtils.getFormattedTimeAndDate(it.eventTime)
-            alertTitle.text = it.eventInfo
+            alertTitle.text = it.eventTypeName
             when (it.alertLevelType) {
                 Alert.AlertLevel.INFORMATION -> {
                     alertLevel.text = "Severe Level : Information"
