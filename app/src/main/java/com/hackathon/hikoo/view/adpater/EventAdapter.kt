@@ -45,13 +45,13 @@ class EventAdapter(
         init {
             eventContent.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    callback?.onAlertItemClicked(item[adapterPosition])
+                    callback?.onEventItemClicked(item[adapterPosition])
                 }
             }
         }
     }
 
     interface EventItemCallback {
-        fun onAlertItemClicked(event: Event)
+        fun onEventItemClicked(event: Event)
     }
 }

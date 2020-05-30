@@ -1,12 +1,13 @@
-package com.hackathon.hikoo.eventreport
+package com.hackathon.hikoo.account
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import com.hackathon.hikoo.BasePresenter
 import com.hackathon.hikoo.BuildConfig
-import com.hackathon.hikoo.manager.UserLocationManager
-import com.hackathon.hikoo.model.domain.EventReport
+import com.hackathon.hikoo.manager.UserManager
+import com.hackathon.hikoo.model.domain.User
 import com.hackathon.hikoo.network.APIManager
 import com.hackathon.hikoo.utils.ImageUtils
 import com.hackathon.hikoo.utils.imageloader.ImageLoadTool
@@ -14,11 +15,11 @@ import com.orhanobut.logger.Logger
 import io.reactivex.rxkotlin.subscribeBy
 import java.io.*
 
-class NewEventPresenter(
-    private val apiManager: APIManager,
-    private val userLocationManager: UserLocationManager,
-    private val imageLoader: ImageLoadTool
-) : BasePresenter<NewEventActivity>() {
+class EditAccountPresenter(
+    private val userManager: UserManager,
+    private val imageLoadTool: ImageLoadTool,
+    private val apiManager: APIManager
+) : BasePresenter<EditAccountActivity>() {
 
     companion object {
         const val CUSTOM_ICON_DIRECTORY = "event"
@@ -31,11 +32,58 @@ class NewEventPresenter(
         private const val CUSTOM_ICON_QUALITY = 80
     }
 
-    private var uploadImagePath: String? = null
+    var hikerUser: User? = null
+
+    private var uploadImagePath = ""
+
+    init {
+        hikerUser = userManager.hikerUser
+    }
+
+    fun fetchHikerInfo() {
+        view?.setupHikerInfo(userManager.hikerUser, imageLoadTool)
+    }
+
+    fun startUpdateHikerInfo() {
+        if (uploadImagePath.isEmpty()) {
+            updateHikerInfo(null)
+        } else {
+            apiManager.postUploadImage(uploadImagePath).subscribeBy(
+                onNext = { response ->
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            updateHikerInfo(it.imagePath)
+                        }
+                    }
+                },
+                onError = {
+                    Logger.e(Log.getStackTraceString(it))
+                }
+            ).autoClear()
+        }
+    }
+
+    private fun updateHikerInfo(imagePath: String?) {
+        if (imagePath != null) {
+            hikerUser?.image = imagePath
+        }
+        userManager.updateUserProfile(hikerUser!!, object : UserManager.OnUserProfileUpdateListener {
+            override fun onUpdateUserProfileSuccess() {
+                view?.showUpdateSuccess()
+            }
+
+            override fun onUpdateUserProfileFailed() {
+                view?.showUpdateFailed()
+            }
+        })
+
+    }
 
     fun handleNativeCameraResult(context: Context) {
         val directory = context.getExternalFilesDir(CUSTOM_ICON_DIRECTORY)
-        val tempFilePath = File(directory, CUSTOM_ICON_TEMP_FILE)
+        val tempFilePath = File(directory,
+            CUSTOM_ICON_TEMP_FILE
+        )
         if (BuildConfig.DEBUG) {
             Logger.d("handleNativeCameraResult: create + ${tempFilePath.name}, length = ${tempFilePath.length()}")
         }
@@ -54,7 +102,9 @@ class NewEventPresenter(
             inputStream = context.contentResolver.openInputStream(uri)
 
             val directory = context.getExternalFilesDir(CUSTOM_ICON_DIRECTORY)
-            val tempFile = File(directory, CUSTOM_ICON_TEMP_FILE)
+            val tempFile = File(directory,
+                CUSTOM_ICON_TEMP_FILE
+            )
             outputStream = FileOutputStream(tempFile)
             val buffer = ByteArray(4 * 1024)
             var read: Int
@@ -84,7 +134,9 @@ class NewEventPresenter(
     }
 
     private fun createPhotoFromFile(context: Context, path: String) {
-        val bitmap = ImageUtils.getScaledBitmapFromFile(path, CUSTOM_ICON_WIDTH_HD, CUSTOM_ICON_HEIGHT_HD, true)
+        val bitmap = ImageUtils.getScaledBitmapFromFile(path,
+            CUSTOM_ICON_WIDTH_HD,
+            CUSTOM_ICON_HEIGHT_HD, true)
         var outputStream: FileOutputStream? = null
 
         try {
@@ -96,7 +148,9 @@ class NewEventPresenter(
                 return
             }
 
-            rotateBitmap.compress(Bitmap.CompressFormat.JPEG, CUSTOM_ICON_QUALITY, stream)
+            rotateBitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                CUSTOM_ICON_QUALITY, stream)
 
             val outputDirectory = context.getExternalFilesDir(CUSTOM_ICON_DIRECTORY)
             val outputFile = File(outputDirectory, CUSTOM_ICON_PREFIX + System.currentTimeMillis() + CUSTOM_ICON_POSTFIX)
@@ -105,7 +159,8 @@ class NewEventPresenter(
             outputStream.write(stream.toByteArray())
             outputStream.flush()
             uploadImagePath = outputFile.absolutePath
-            view?.showUploadImage(imageLoader, outputFile.absolutePath)
+            hikerUser?.image = outputFile.absolutePath
+            view?.showUploadImage(imageLoadTool, outputFile.absolutePath)
         } catch (ex: IOException) {
             ex.printStackTrace()
             Logger.e(ex, "handleNativeCameraResult")
@@ -122,52 +177,7 @@ class NewEventPresenter(
         }
     }
 
-    override fun detachView() {
-        uploadImagePath = null
-        super.detachView()
-    }
-
-    fun uploadImage(description: String) {
-        if (uploadImagePath != null) {
-            apiManager.postUploadImage(uploadImagePath!!).subscribeBy(
-                onNext = { response ->
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            Logger.d("postUploadImage = ${it.imagePath}")
-                            sendReport(description, it.imagePath)
-                        }
-                    }
-                },
-                onError = {
-
-                }
-            ).autoClear()
-        } else {
-            sendReport(description, "")
-        }
-    }
-
-    private fun sendReport(description: String, imagePaths: String) {
-        val eventReport = EventReport()
-        with(eventReport) {
-            eventTypeId = 1
-            eventInfo = description
-            alertLevelId = 1
-            hikeId = 1
-            latpt = 24.780215
-            lngpt = 120.996321
-            radius = 0
-            attachments = listOf(imagePaths)
-        }
-        apiManager.postEvent(eventReport).subscribeBy(
-            onNext = { response ->
-                if (response.isSuccessful) {
-                    view?.showSendReportSuccess()
-                }
-            },
-            onError = {
-
-            }
-        ).autoClear()
+    fun isValidate(): Boolean {
+        return hikerUser?.isValidate ?: false
     }
 }

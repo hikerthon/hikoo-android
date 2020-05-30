@@ -64,11 +64,13 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
         }
     }
 
-    fun updateUserData(user: User) {
+    fun updateUserData(user: User?) {
         this.user = user
-        accountNameTextView?.text = "${user.firstName} ${user.lastName}"
-        accountImageView?.let {
-            imageLoadTool.loadCircleImage(user.image, it, R.drawable.ic_profile_icon)
+        user?.let {
+            accountNameTextView?.text = "${it.firstName} ${it.lastName}"
+            accountImageView?.let { view ->
+                imageLoadTool.loadCircleImage(it.image, view, R.drawable.ic_profile_icon)
+            }
         }
     }
 
@@ -129,6 +131,9 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
             R.id.nav_logout -> {
                 callback?.onDrawerMenuClickLogout()
             }
+            R.id.nav_check_out -> {
+                callback?.onDrawerMenuClickCheckOut()
+            }
             else -> return false
         }
         return item.isChecked
@@ -143,9 +148,9 @@ class DrawerManager(private val imageLoadTool: ImageLoadToolImpl) : NavigationVi
 
     interface onDrawerMenuClickListener {
         fun onDrawerMenuClickMountainPermitPage()
-        fun onDrawerMenuClickHikooPage()
         fun onDrawerMenuClickEventReportPage()
         fun onDrawerHeaderUserClicked()
+        fun onDrawerMenuClickCheckOut()
         fun onDrawerMenuClickLogout()
     }
 }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.location.Location
 import android.location.LocationManager
 import androidx.core.content.edit
+import com.hackathon.hikoo.model.domain.User
 import com.orhanobut.logger.Logger
 import com.squareup.moshi.Moshi
 
@@ -19,6 +20,7 @@ class SharePreferenceManager(
     private val REFRESH_TOKEN_KEY = "refresh-token"
     private val LOCATION_LATITUDE = "location-latitude"
     private val LOCATION_LONGITUDE = "location-longitude"
+    private val HIKER_INFO_KEY = "hiker-info-key"
 
     private val sharedpreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -81,5 +83,23 @@ class SharePreferenceManager(
                 it.longitude = longitude.toDouble()
             }
         }
+    }
+
+    fun saveHiker(hiker: User?) {
+        val jsonAdapter = moshi.adapter(User::class.java)
+        val jsonString = jsonAdapter.toJson(hiker) ?: ""
+
+        sharedpreferences.edit {
+            putString(HIKER_INFO_KEY, jsonString)
+        }
+    }
+
+    fun getHiker(): User? {
+        val jsonString = sharedpreferences.getString(HIKER_INFO_KEY, "") ?: ""
+        if (jsonString.isNotBlank()) {
+            val jsonAdapter = moshi.adapter(User::class.java)
+            return jsonAdapter.fromJson(jsonString)
+        }
+        return null
     }
 }

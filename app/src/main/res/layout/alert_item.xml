@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:maxLines="1"
+            android:textSize="16sp"
             android:ellipsize="end"
             tools:text="Flash Flood near Culpa Qui River"
             android:textColor="@color/white" />

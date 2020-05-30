@@ -1,11 +1,11 @@
 package com.hackathon.hikoo.alert
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 
@@ -16,7 +16,7 @@ import com.hackathon.hikoo.view.ListDivider
 import com.hackathon.hikoo.view.adpater.AlertAdapter
 import org.koin.android.ext.android.inject
 
-class AlertFragment : Fragment(), AlertView, AlertAdapter.AlertItemCallback {
+class AlertFragment : Fragment(), IAlert, AlertAdapter.AlertItemCallback {
 
     companion object {
         fun newInstance() = AlertFragment()
@@ -40,7 +40,12 @@ class AlertFragment : Fragment(), AlertView, AlertAdapter.AlertItemCallback {
     }
 
     override fun onAlertItemClicked(alert: Alert) {
-
+        val context= context ?: return
+        val intent = Intent(context, AlertDetailActivity::class.java)
+        val bundle = Bundle()
+        bundle.putParcelable(AlertDetailActivity.ALERT_DETAIL, alert)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun setupAlertList(list: List<Alert>) {

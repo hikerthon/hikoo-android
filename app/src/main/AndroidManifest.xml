@@ -26,7 +26,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".eventreport.NewEventActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -52,7 +51,27 @@
         </activity>
         <activity
             android:name=".maincontainer.MainActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" >
+            <intent-filter
+                android:autoVerify="true"
+                android:icon="@mipmap/ic_launcher"
+                android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="hikoo" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".alert.AlertDetailActivity" />
+        <activity android:name=".eventreport.EventDetailActivity" />
+        <activity android:name=".mountainpermit.MountainPermitDetail" />
+        <activity android:name=".eventreport.newevent.NewEventActivity" />
+        <activity
+            android:name=".account.EditAccountActivity"
+            android:theme="@style/AppTheme"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

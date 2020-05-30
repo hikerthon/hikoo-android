@@ -2,10 +2,17 @@ package com.hackathon.hikoo.model.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.hackathon.hikoo.model.entity._EventReport;
 
+import java.util.logging.Logger;
+
 public class EventReport extends _EventReport implements Parcelable {
+
+    public boolean isValidate() {
+        return !TextUtils.isEmpty(this.eventInfo) && this.eventTypeId != 0 && this.alertLevelId != 0;
+    }
 
     @Override
     public int describeContents() {

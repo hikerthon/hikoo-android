@@ -14,7 +14,7 @@ import com.hackathon.hikoo.model.domain.MountainPermit
 import com.hackathon.hikoo.view.adpater.MountainPermitAdapter
 import org.koin.android.ext.android.inject
 
-class MountainPermitFragment : Fragment(), MountainPermitView, MountainPermitAdapter.MountainPermitItemCallback {
+class MountainPermitFragment : Fragment(), IMountainPermit, MountainPermitAdapter.MountainPermitItemCallback {
 
     companion object {
         fun newInstance() = MountainPermitFragment()

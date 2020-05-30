@@ -1,6 +1,7 @@
 package com.hackathon.hikoo.network
 
 import android.location.Location
+import android.os.SystemClock
 import com.hackathon.hikoo.model.domain.*
 import com.hackathon.hikoo.model.entity.RequestResult
 import com.hackathon.hikoo.utils.createJPGImageFileMultipart
@@ -11,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Response
+import java.util.*
 
 class APIManagerImpl(
     httpClient: HttpClient,
@@ -30,13 +32,20 @@ class APIManagerImpl(
     }
 
     override fun postLocation(
-        userId: Int,
+        mountainPermit: MountainPermit,
         location: Location
     ): Observable<Triple<Boolean, Locations, Error?>> {
+        val c = Calendar.getInstance()
         val body = JSONObject().apply {
-            put("userId", userId)
-            put("lat", location.latitude)
-            put("lng", location.longitude)
+            put("hikerId", mountainPermit.hikerId)
+            put("hikeId", mountainPermit.id)
+            put("latpt", location.latitude)
+            put("lngpt", location.longitude)
+            put("recordTime", c.timeInMillis)
+            put("elevation", 2000)
+            put("battery", 80)
+            put("network", -60)
+            put("elapsedTime", c.timeInMillis)
         }.toString().run {
             this.toRequestBody(HttpClient.JSON_MEDIA_TYPE)
         }
@@ -97,5 +106,9 @@ class APIManagerImpl(
 
     override fun getPermit(type: String): Observable<Response<List<MountainPermit>>> {
         return hikooService.getPermit(type).observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun postCheckOut(userId: Int): Observable<Response<RequestResult>> {
+        return hikooService.postCheckOut(userId).observeOn(AndroidSchedulers.mainThread())
     }
 }

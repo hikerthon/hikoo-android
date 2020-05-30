@@ -18,7 +18,7 @@ abstract class APIManager(
     companion object {
         private const val BASE_URL = "http://18.177.114.248:3001"
 //        private const val BASE_URL = "http://192.168.11.59:3001"
-//        private const val BASE_URL = "http://192.168.11.34:3001"
+//        private const val BASE_URL = "http://192.168.11.41:3001"
     }
 
     protected lateinit var hikooService: HikooService
@@ -55,10 +55,11 @@ abstract class APIManager(
     abstract fun getEvent(): Observable<Response<List<Event>>>
     abstract fun postEvent(event: EventReport): Observable<Response<RequestResult>>
     abstract fun postUploadImage(image: String): Observable<Response<RequestResult>>
-    abstract fun postLocation(userId: Int, location: Location): Observable<Triple<Boolean, Locations, Error?>>
+    abstract fun postLocation(mountainPermit: MountainPermit, location: Location): Observable<Triple<Boolean, Locations, Error?>>
     abstract fun postSOS(lat: Double?, lng: Double?): Observable<Response<RequestResult>>
     abstract fun getShelter(lat: Double?, lng: Double?): Observable<Response<List<Shelter>>>
     abstract fun getPermitById(permitId: Int, type: String): Observable<Response<MountainPermit>>
     abstract fun getPermit(type: String = "All"): Observable<Response<List<MountainPermit>>>
+    abstract fun postCheckOut(hikeId: Int): Observable<Response<RequestResult>>
 
 }

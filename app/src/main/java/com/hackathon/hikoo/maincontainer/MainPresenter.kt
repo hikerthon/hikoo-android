@@ -1,5 +1,6 @@
 package com.hackathon.hikoo.maincontainer
 
+import android.util.Log
 import com.hackathon.hikoo.BasePresenter
 import com.hackathon.hikoo.manager.DrawerManager
 import com.hackathon.hikoo.manager.SharePreferenceManager
@@ -29,16 +30,29 @@ class MainPresenter (
     private val imageLoadTool: ImageLoadTool
 ) : BasePresenter<MainActivity>() {
 
-    fun launchView() {
-        userManager.fetchUserProfile(object : UserManager.OnUserProfileListener {
-            override fun onFetchUserProfileSuccess(user: User) {
-                view?.updateDrawer(user, drawerManager, imageLoadTool)
-            }
+    override fun attachView(view: MainActivity) {
+        super.attachView(view)
+        if (userManager.hikerUser != null) {
+            setupView(userManager.hikerUser!!)
+        } else {
+            userManager.fetchUserProfile(object : UserManager.OnUserProfileListener {
+                override fun onFetchUserProfileSuccess(user: User) {
+                    setupView(user)
+                }
 
-            override fun onFetchUserProfileFailed() {
-            }
-        })
+                override fun onFetchUserProfileFailed() {
+                }
+            })
+        }
+    }
+
+    fun setupView(user: User) {
         view?.setupDrawer(drawerManager)
+        view?.updateDrawer(user, drawerManager, imageLoadTool)
+        launchView()
+    }
+
+    fun launchView() {
         view?.requireLocationPermission()
         view?.launchHikooPage()
         view?.startListeningUserStateChange()
@@ -56,7 +70,7 @@ class MainPresenter (
                 @Throws(Exception::class)
                 override fun apply(isConnected: Boolean): Publisher<Triple<Boolean, Locations, Error?>>? {
                     if (isConnected) {
-                        return apiManager.postLocation(1, userLocationManager.currentLocation!!).toFlowable(BackpressureStrategy.DROP)
+                        return apiManager.postLocation(userManager.mountainPermit!!, userLocationManager.currentLocation!!).toFlowable(BackpressureStrategy.DROP)
                     } else {
                         return Flowable.empty()
                     }
@@ -81,6 +95,32 @@ class MainPresenter (
     fun logout() {
         userManager.logoutUser()
         view?.backToLogin()
+    }
+
+    fun startCheckOut() {
+        userManager.mountainPermit?.let {
+            view?.showCheckOutDialog(it)
+        }
+
+
+    }
+
+    fun checkOutPermit() {
+        userManager.mountainPermit?.let {
+            apiManager.postCheckOut(it.id).subscribeBy(
+                onNext = { reponse ->
+                    if (reponse.isSuccessful) {
+                        view?.showCheckOutSuccess()
+                    } else {
+                        view?.showCheckOutFailed()
+                    }
+                },
+                onError = {
+                    view?.showCheckOutFailed()
+                    Logger.d(Log.getStackTraceString(it))
+                }
+            ).autoClear()
+        }
     }
 
 }

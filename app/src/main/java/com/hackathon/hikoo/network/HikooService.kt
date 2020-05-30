@@ -49,6 +49,9 @@ interface HikooService {
     fun getPermit(@Query("type") type: String): Observable<Response<List<MountainPermit>>>
 
     @GET("/permit/{permitId}")
-    fun getPermitById(@Query("permitId") permitId: Int, @Query("type") type: String): Observable<Response<MountainPermit>>
+    fun getPermitById(@Path("permitId") permitId: Int, @Query("type") type: String): Observable<Response<MountainPermit>>
+
+    @POST("/checkout/{hikeId}")
+    fun postCheckOut(@Path("hikeId") hikeId: Int): Observable<Response<RequestResult>>
 
 }

@@ -13,13 +13,18 @@ class AccountPresenter(
 ) : BasePresenter<AccountFragment>() {
 
     fun fetchHikerInfo() {
-        userManager.fetchUserProfile(object : UserManager.OnUserProfileListener {
-            override fun onFetchUserProfileSuccess(user: User) {
-                view?.setupHikerInfo(user, imageLoadTool)
-            }
+        if (userManager.hikerUser != null) {
+            view?.setupHikerInfo(userManager.hikerUser!!, imageLoadTool)
+        } else {
+            userManager.fetchUserProfile(object : UserManager.OnUserProfileListener {
+                override fun onFetchUserProfileSuccess(user: User) {
+                    view?.setupHikerInfo(user, imageLoadTool)
+                }
 
-            override fun onFetchUserProfileFailed() {
-            }
-        })
+                override fun onFetchUserProfileFailed() {
+                }
+            })
+        }
+
     }
 }

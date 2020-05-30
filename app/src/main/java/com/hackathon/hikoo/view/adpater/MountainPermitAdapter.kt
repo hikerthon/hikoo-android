@@ -34,7 +34,7 @@ class MountainPermitAdapter(
         val context = holder.itemView.context
 
         holder.permitTitle.text = mountainPermitItem.permitName
-        holder.permitDate.text = DateUtils.getFormattedNormal(mountainPermitItem.acceptedTime)
+        holder.permitDate.text = DateUtils.getFormattedNormal(mountainPermitItem.hikeStart)
         holder.permitState.text = mountainPermitItem.permitAccepted
 
         when (mountainPermitItem.permitAccessType) {

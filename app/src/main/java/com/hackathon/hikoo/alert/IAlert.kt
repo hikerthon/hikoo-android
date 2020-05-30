@@ -1,8 +1,8 @@
 package com.hackathon.hikoo.alert
 
-import com.hackathon.hikoo.BaseView
+import com.hackathon.hikoo.IBase
 import com.hackathon.hikoo.model.domain.Alert
 
-interface AlertView: BaseView {
+interface IAlert: IBase {
     fun setupAlertList(list: List<Alert>)
 }

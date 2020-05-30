@@ -180,7 +180,6 @@ class UserLocationManager(
                                 val resolvable = apiException as ResolvableApiException
                                 failedCallback.onResolutionRequired(resolvable)
                             } else {
-                                // FIXME:: Maybe have error in here.
                                 failedCallback.onResolutionManually()
                             }
                         }

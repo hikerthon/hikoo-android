@@ -26,6 +26,9 @@
             android:icon="@drawable/ic_event_report_menu"
             app:actionLayout="@layout/drawer_view_action_layout"/>
         <item
+            android:id="@+id/nav_check_out"
+            android:title="Check Out"/>
+        <item
             android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>

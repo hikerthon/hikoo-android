@@ -4,6 +4,9 @@ import com.squareup.moshi.Json;
 
 public class _User {
 
+	@Json(name = "id")
+	protected int id;
+
 	@Json(name = "lastName")
 	protected String lastName;
 
@@ -37,6 +40,9 @@ public class _User {
 	@Json(name = "nationality")
 	protected String nationality;
 
+	@Json(name = "watchStatus")
+	protected String watchStatus;
+
 	@Json(name = "dob")
 	protected long dob;
 
@@ -46,8 +52,8 @@ public class _User {
 	@Json(name = "identificationNumber")
 	protected String identificationNumber;
 
-	@Json(name = "id")
-	protected int id;
+	@Json(name = "emergencyMobile")
+	protected String emergencyMobile;
 
 	@Json(name = "homeNumber")
 	protected String homeNumber;
@@ -60,6 +66,14 @@ public class _User {
 
 	@Json(name = "username")
 	protected String username;
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
 
 	public void setLastName(String lastName){
 		this.lastName = lastName;
@@ -149,6 +163,14 @@ public class _User {
 		return nationality;
 	}
 
+	public void setWatchStatus(String watchStatus){
+		this.watchStatus = watchStatus;
+	}
+
+	public String getWatchStatus(){
+		return watchStatus;
+	}
+
 	public void setDob(long dob){
 		this.dob = dob;
 	}
@@ -173,12 +195,12 @@ public class _User {
 		return identificationNumber;
 	}
 
-	public void setId(int id){
-		this.id = id;
+	public void setEmergencyMobile(String emergencyMobile){
+		this.emergencyMobile = emergencyMobile;
 	}
 
-	public int getId(){
-		return id;
+	public String getEmergencyMobile(){
+		return emergencyMobile;
 	}
 
 	public void setHomeNumber(String homeNumber){

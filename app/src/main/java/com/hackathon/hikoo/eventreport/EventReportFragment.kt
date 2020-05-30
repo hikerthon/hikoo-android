@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import com.hackathon.hikoo.R
+import com.hackathon.hikoo.eventreport.newevent.NewEventActivity
 import com.hackathon.hikoo.maincontainer.MainActivity
 import com.hackathon.hikoo.model.domain.Event
 import com.hackathon.hikoo.utils.imageloader.ImageLoadTool
@@ -18,7 +19,7 @@ import com.hackathon.hikoo.view.ListDivider
 import com.hackathon.hikoo.view.adpater.EventAdapter
 import org.koin.android.ext.android.inject
 
-class EventReportFragment : Fragment(), EventReportView, EventAdapter.EventItemCallback {
+class EventReportFragment : Fragment(), IEventReport, EventAdapter.EventItemCallback {
     
     companion object {
         fun newInstance() = EventReportFragment()
@@ -42,6 +43,11 @@ class EventReportFragment : Fragment(), EventReportView, EventAdapter.EventItemC
         presenter.fetchEvent()
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.fetchEvent()
+    }
+
     private fun retrieveViews(view: View) {
         eventList = view.findViewById(R.id.event_list)
         fabAdd = view.findViewById(R.id.fab_add)
@@ -54,8 +60,13 @@ class EventReportFragment : Fragment(), EventReportView, EventAdapter.EventItemC
         }
     }
 
-    override fun onAlertItemClicked(event: Event) {
-
+    override fun onEventItemClicked(event: Event) {
+        val context = context ?: return
+        val intent = Intent(context, EventDetailActivity::class.java)
+        val bundle = Bundle()
+        bundle.putParcelable(EventDetailActivity.EVENT_DETAIL, event)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun setupEventList(list: List<Event>, imageLoadTool: ImageLoadTool) {

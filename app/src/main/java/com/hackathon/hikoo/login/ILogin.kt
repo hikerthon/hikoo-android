@@ -1,8 +1,8 @@
 package com.hackathon.hikoo.login
 
-import com.hackathon.hikoo.BaseView
+import com.hackathon.hikoo.IBase
 
-interface LoginView: BaseView {
+interface ILogin: IBase {
     fun loginSuccess()
     fun loginFailed()
 

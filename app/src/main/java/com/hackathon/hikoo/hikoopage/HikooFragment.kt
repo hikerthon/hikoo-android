@@ -1,7 +1,9 @@
 package com.hackathon.hikoo.hikoopage
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -15,24 +17,21 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 
 import com.hackathon.hikoo.R
 import com.hackathon.hikoo.maincontainer.MainActivity
+import com.hackathon.hikoo.model.domain.Alert
 import com.hackathon.hikoo.model.domain.Shelter
+import com.hackathon.hikoo.utils.bitmapDescriptorFromVector
 import com.hackathon.hikoo.utils.imageloader.ImageLoadTool
 import com.hackathon.hikoo.view.ListDivider
 import com.hackathon.hikoo.view.adpater.ShelterAdapter
-import com.orhanobut.logger.Logger
-import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.inject
 
-class HikooFragment : Fragment(), HikooView,
+class HikooFragment : Fragment(), IHikoo,
     OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
-    GoogleMap.OnMapClickListener,
-    GoogleMap.OnCameraMoveStartedListener,
-    GoogleMap.OnCameraIdleListener,
-    GoogleMap.OnCameraMoveListener,
     ShelterAdapter.ShelterItemCallback {
 
     private var mapView: MapView? = null
@@ -85,7 +84,6 @@ class HikooFragment : Fragment(), HikooView,
 
     override fun onStart() {
         super.onStart()
-//        EventBus.getDefault().register(this)
         mapView?.onStart()
     }
 
@@ -104,7 +102,6 @@ class HikooFragment : Fragment(), HikooView,
     override fun onStop() {
         mapView?.onStop()
         super.onStop()
-//        EventBus.getDefault().unregister(this)
     }
 
     override fun onDestroy() {
@@ -138,30 +135,17 @@ class HikooFragment : Fragment(), HikooView,
         this.googleMap = googleMap
         this.googleMap?.isIndoorEnabled = false
         this.googleMap?.setOnMarkerClickListener(this)
-        this.googleMap?.setOnMapClickListener(this)
         activity?.let {
             if (ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return
             }
 
-            presenter.getShelter(it, googleMap)
+            presenter.initGoogleMap(googleMap)
         }
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         return true
-    }
-
-    override fun onMapClick(position: LatLng?) {
-    }
-
-    override fun onCameraMoveStarted(position: Int) {
-    }
-
-    override fun onCameraIdle() {
-    }
-
-    override fun onCameraMove() {
     }
 
     //region HikooView
@@ -189,16 +173,69 @@ class HikooFragment : Fragment(), HikooView,
         }
     }
 
-    override fun setupMyLocation(shelter: Shelter) {
+    override fun setupMyLocation(location: Location) {
         try {
             val defaultLocation = LatLng(24.780033, 120.996217)
-            val userLocation = LatLng(shelter.latpt, shelter.lngpt)
+            val userLocation = LatLng(location.latitude, location.longitude)
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
         } catch (e: NullPointerException) {
             e.printStackTrace()
         }
     }
+
+    override fun setupMyLocationMarker(shelter: Shelter) {
+       googleMap?.addMarker(MarkerOptions()
+           .position(LatLng(shelter.latpt, shelter.lngpt))
+           .icon(bitmapDescriptorFromVector(context!!, R.drawable.ic_current_location)))
+    }
+
+    override fun setupShelterMarker(shelter: Shelter) {
+        googleMap?.addMarker(MarkerOptions()
+            .position(LatLng(shelter.latpt, shelter.lngpt))
+            .icon(bitmapDescriptorFromVector(context!!, R.drawable.ic_shelter_location)))
+    }
+
+    override fun showSOSSuccess() {
+        val context = context ?: return
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("Success")
+            .setMessage("Send SOS successfully")
+            .setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context, R.color.eastern_blue))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.eastern_blue))
+        }
+        dialog.show()
+    }
+
+    override fun showSOSFailed() {
+        val context = context ?: return
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("Failed")
+            .setMessage("Send SOS failed \n Please retry")
+            .setPositiveButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setNegativeButton("Retry") { dialog, which ->
+                dialog.dismiss()
+                presenter.sendSOS()
+            }
+            .create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context, R.color.eastern_blue))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.eastern_blue))
+        }
+        dialog.show()
+    }
+
     //endregion
 
 }

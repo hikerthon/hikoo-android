@@ -8,7 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.plusAssign
 
-abstract class BasePresenter<T : BaseView> : LifecycleObserver {
+abstract class BasePresenter<T : IBase> : LifecycleObserver {
 
     private val subscriptions: CompositeDisposable by lazy { CompositeDisposable() }
     protected var view: T? = null
@@ -29,6 +29,6 @@ abstract class BasePresenter<T : BaseView> : LifecycleObserver {
     }
 }
 
-interface BaseView {
+interface IBase {
     fun provideLifecycleOwner(): LifecycleOwner
 }

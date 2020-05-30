@@ -9,8 +9,6 @@ class AlertPresenter(
     private val apiManager: APIManager
 ) : BasePresenter<AlertFragment>() {
 
-
-
     fun fetchAlert() {
         apiManager.getAlert().subscribeBy(
             onNext = { response ->

@@ -5,11 +5,10 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -17,13 +16,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.hackathon.hikoo.BaseActivity
 import com.hackathon.hikoo.R
 import com.hackathon.hikoo.login.LoginActivity
 import com.hackathon.hikoo.manager.DrawerManager
 import com.hackathon.hikoo.manager.UserLocationManager
+import com.hackathon.hikoo.model.domain.MountainPermit
 import com.hackathon.hikoo.model.domain.User
 import com.hackathon.hikoo.utils.ActionLock
 import com.hackathon.hikoo.utils.bindView
@@ -36,7 +35,7 @@ import org.koin.android.ext.android.inject
 class MainActivity : BaseActivity(),
     DrawerManager.onDrawerMenuClickListener,
     UserLocationManager.OnLocationSettingFailedCallback,
-    MainView {
+    IMain {
 
     companion object {
         const val REQUEST_PERMISSION = 1000
@@ -69,7 +68,6 @@ class MainActivity : BaseActivity(),
         setContentView(R.layout.activity_main)
         setupActionBar()
         presenter.attachView(this)
-        presenter.launchView()
 
         toolbarAvatar.setOnClickListener {
             drawerManager.openDrawer(true)
@@ -106,6 +104,7 @@ class MainActivity : BaseActivity(),
 
     fun startLocationListener() {
         if (!userLocationManager.isRunning() && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            presenter.uploadUserLocation()
             userLocationManager.startLocationUpdate(this)
         }
     }
@@ -164,16 +163,15 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    override fun onDrawerMenuClickLogout() {
+    override fun onDrawerMenuClickCheckOut() {
         drawerItemClickLock.doTimerLockAction {
-//            presenter.logout()
+            presenter.startCheckOut()
         }
     }
 
-    override fun onDrawerMenuClickHikooPage() {
+    override fun onDrawerMenuClickLogout() {
         drawerItemClickLock.doTimerLockAction {
-            router.navToHikooPage()
-            showBackButton(false)
+            presenter.logout()
         }
     }
 
@@ -237,10 +235,6 @@ class MainActivity : BaseActivity(),
         toolbar.navigationIcon = null
     }
 
-    fun openDrawer() {
-        drawerManager.openDrawer(true)
-    }
-
     override fun startListeningUserStateChange() {
         val intentFilter = IntentFilter()
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter)
@@ -252,9 +246,55 @@ class MainActivity : BaseActivity(),
         startActivity(intent)
     }
 
-    override fun updateDrawer(user: User, drawerManager: DrawerManager, imageLoadTool: ImageLoadTool) {
-        imageLoadTool.loadCircleImage(this, user.image, toolbarAvatar, R.drawable.ic_profile_icon)
+    override fun updateDrawer(user: User?, drawerManager: DrawerManager, imageLoadTool: ImageLoadTool) {
+        imageLoadTool.loadCircleImage(this, user?.image, toolbarAvatar, R.drawable.ic_profile_icon)
         drawerManager.updateUserData(user)
     }
+
+    override fun showCheckOutDialog(mountainPermit: MountainPermit) {
+        AlertDialog.Builder(this)
+            .setTitle("Check Out")
+            .setMessage("Are you sure want to ${mountainPermit.permitName} check out?")
+            .setPositiveButton("CheckOut") { dialog, which ->
+                dialog.dismiss()
+                presenter.checkOutPermit()
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    override fun showCheckOutSuccess() {
+        AlertDialog.Builder(this)
+            .setTitle("Result")
+            .setMessage("Check out is successful")
+            .setPositiveButton("CheckOut") { dialog, which ->
+                dialog.dismiss()
+                presenter.checkOutPermit()
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    override fun showCheckOutFailed() {
+        AlertDialog.Builder(this)
+            .setTitle("Result")
+            .setMessage("Check out is failed")
+            .setPositiveButton("Retry") { dialog, which ->
+                dialog.dismiss()
+                presenter.checkOutPermit()
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
     //endregion
 }

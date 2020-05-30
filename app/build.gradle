@@ -80,10 +80,11 @@ dependencies {
     // Logger
     implementation 'com.orhanobut:logger:2.2.0'
 
-    //Glide
+    // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
+    // Firebase
     implementation 'com.google.firebase:firebase-core:17.4.2'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.2'

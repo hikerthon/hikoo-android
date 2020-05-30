@@ -10,10 +10,9 @@ import com.google.android.material.button.MaterialButton
 import com.hackathon.hikoo.R
 import com.hackathon.hikoo.maincontainer.MainActivity
 import com.hackathon.hikoo.utils.bindView
-import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 
-class LoginActivity : AppCompatActivity(), LoginView {
+class LoginActivity : AppCompatActivity(), ILogin {
 
     private val presenter: LoginPresenter by inject()
     private val loginButton: MaterialButton by bindView(R.id.btn_login)
@@ -24,8 +23,6 @@ class LoginActivity : AppCompatActivity(), LoginView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_acctivity)
         presenter.attachView(this)
-
-//        loginSuccess()
 
         loginButton.setOnClickListener {
             if (emailEdittext.text.toString().isNotEmpty() && passwordEdittext.text.toString().isNotEmpty()) {
@@ -42,6 +39,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
     override fun loginSuccess() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
         startActivity(intent)
     }
 

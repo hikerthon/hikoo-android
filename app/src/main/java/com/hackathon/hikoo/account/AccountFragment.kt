@@ -1,5 +1,6 @@
 package com.hackathon.hikoo.account
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -76,6 +77,8 @@ class AccountFragment : Fragment(), AccountView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_edit -> {
+                val intent = Intent(context, EditAccountActivity::class.java)
+                startActivity(intent)
                 return true
             }
         }

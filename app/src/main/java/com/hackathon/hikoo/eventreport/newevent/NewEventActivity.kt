@@ -1,7 +1,8 @@
-package com.hackathon.hikoo.eventreport
+package com.hackathon.hikoo.eventreport.newevent
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,7 +13,9 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
@@ -20,10 +23,12 @@ import com.hackathon.hikoo.BaseActivity
 import com.hackathon.hikoo.R
 import com.hackathon.hikoo.utils.bindView
 import com.hackathon.hikoo.utils.imageloader.ImageLoadTool
+import com.orhanobut.logger.Logger
 import org.koin.android.ext.android.inject
 import java.io.File
 
-class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
+class NewEventActivity : BaseActivity(),
+    INewEvent, View.OnClickListener {
 
     companion object {
         private const val REQUEST_CAMERA = 1001
@@ -31,7 +36,7 @@ class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
     }
 
     private val cancelButton: MaterialTextView by bindView(R.id.cancel_button)
-    private val titleEdit: AppCompatEditText by bindView(R.id.event_title_edit)
+    private val alertTypeChoose: MaterialTextView by bindView(R.id.alert_type_choose)
     private val eventTypeChoose: MaterialTextView by bindView(R.id.event_type_choose)
     private val locationChoose: MaterialTextView by bindView(R.id.event_location_choose)
     private val eventDescriptionEdit: AppCompatEditText by bindView(R.id.event_description_edittext)
@@ -88,7 +93,9 @@ class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
         albumIntent.type = "image/*"
         albumIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
         albumIntent.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(albumIntent, REQUEST_ALBUM)
+        startActivityForResult(albumIntent,
+            REQUEST_ALBUM
+        )
     }
 
     private fun takePhotoByCamera() {
@@ -99,7 +106,9 @@ class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
             val iconUri = FileProvider.getUriForFile(this, getString(R.string.file_provider_authority), tempFile)
 
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, iconUri)
-            startActivityForResult(cameraIntent, REQUEST_CAMERA)
+            startActivityForResult(cameraIntent,
+                REQUEST_CAMERA
+            )
         }
     }
 
@@ -109,12 +118,16 @@ class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.custom_icon_camera -> {
-                    if (checkPermissions(mutableListOf(Manifest.permission.CAMERA), REQUEST_CAMERA)) {
+                    if (checkPermissions(mutableListOf(Manifest.permission.CAMERA),
+                            REQUEST_CAMERA
+                        )) {
                         takePhotoByCamera()
                     }
                 }
                 R.id.custom_icon_album -> {
-                    if (checkPermissions(mutableListOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_ALBUM)) {
+                    if (checkPermissions(mutableListOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                            REQUEST_ALBUM
+                        )) {
                         takePhotoByAlbum()
                     }
                 }
@@ -130,6 +143,12 @@ class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
         locationChoose.setOnClickListener(this)
         eventTypeChoose.setOnClickListener(this)
         cancelButton.setOnClickListener(this)
+        alertTypeChoose.setOnClickListener(this)
+
+        eventDescriptionEdit.doOnTextChanged { text, start, count, after ->
+            Logger.d("doOnTextChanged = ${text.toString()}")
+            presenter.eventReport?.eventInfo = text.toString()
+        }
     }
 
     override fun onClick(view: View) {
@@ -141,15 +160,66 @@ class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
                 showCustomIconPopupDialog()
             }
             R.id.event_send_submit -> {
-                presenter.uploadImage(eventDescriptionEdit.text.toString())
-            }
-            R.id.event_location_choose -> {
-
+                if (presenter.isValidate()) {
+                    presenter.uploadImage(eventDescriptionEdit.text.toString())
+                } else {
+                    AlertDialog.Builder(this)
+                        .setMessage("Do not entry empty")
+                        .create()
+                        .show()
+                }
             }
             R.id.event_type_choose -> {
-
+                openEventTypeChooseDialog()
+            }
+            R.id.alert_type_choose -> {
+                openAlertTypeChooseDialog()
             }
         }
+    }
+
+    private fun openAlertTypeChooseDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Choose alert type")
+            .setItems(arrayOf("Wild Animal", "Item Found", "Blocked Route")) { dialog, which ->
+                presenter.eventReport?.alertLevelId = which + 1
+                dialog.dismiss()
+                when (which) {
+                    0 -> {
+                        alertTypeChoose.text = "Wild Animal"
+                    }
+                    1 -> {
+                        alertTypeChoose.text = "Item Found"
+                    }
+                    2 -> {
+                        alertTypeChoose.text = "Blocked Route"
+                    }
+                }
+            }
+            .create()
+            .show()
+    }
+
+    private fun openEventTypeChooseDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Choose event type")
+            .setItems(arrayOf("Information", "Caution", "Danger")) { dialog, which ->
+                presenter.eventReport?.eventTypeId = which + 1
+                dialog.dismiss()
+                when (which) {
+                    0 -> {
+                        eventTypeChoose.text = "Information"
+                    }
+                    1 -> {
+                        eventTypeChoose.text = "Caution"
+                    }
+                    2 -> {
+                        eventTypeChoose.text = "Danger"
+                    }
+                }
+            }
+            .create()
+            .show()
     }
 
     //region NewEventView
@@ -160,6 +230,45 @@ class NewEventActivity : BaseActivity(), NewEventView, View.OnClickListener {
     override fun showUploadImage(imageLoader: ImageLoadTool, path: String) {
         imageLoader.loadImage(this, path, eventImage)
     }
+
+    override fun showSendReportSuccess() {
+        val dialog = AlertDialog.Builder(this)
+            .setCancelable(false)
+            .setTitle("Result")
+            .setMessage("Send event successfully")
+            .setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+                finish()
+            }
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.eastern_blue))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.eastern_blue))
+        }
+        dialog.show()
+    }
+
+    override fun showSendReportFailed() {
+        val dialog = AlertDialog.Builder(this)
+            .setCancelable(false)
+            .setTitle("Result")
+            .setMessage("Send event failed")
+            .setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.eastern_blue))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.eastern_blue))
+        }
+        dialog.show()
+    }
+
     //endregion
 
 

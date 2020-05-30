@@ -3,9 +3,10 @@ package com.hackathon.hikoo
 import android.app.Application
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.hackathon.hikoo.account.AccountPresenter
+import com.hackathon.hikoo.account.EditAccountPresenter
 import com.hackathon.hikoo.alert.AlertPresenter
 import com.hackathon.hikoo.eventreport.EventReportPresenter
-import com.hackathon.hikoo.eventreport.NewEventPresenter
+import com.hackathon.hikoo.eventreport.newevent.NewEventPresenter
 import com.hackathon.hikoo.hikoopage.HikooPresenter
 import com.hackathon.hikoo.login.LoginPresenter
 import com.hackathon.hikoo.maincontainer.MainPresenter
@@ -40,11 +41,19 @@ class HikooApplication: Application() {
         factory { HikooPresenter(get<UserLocationManager>(), get<ShelterManager>(),
             get<ImageLoadToolImpl>(), get<APIManagerImpl>(), get<SharePreferenceManager>()) }
         factory { LoginPresenter(get<APIManagerImpl>(), get<UserManager>()) }
-        factory { NewEventPresenter(get<APIManagerImpl>(), get<UserLocationManager>(), get<ImageLoadToolImpl>()) }
+        factory {
+            NewEventPresenter(
+                get<APIManagerImpl>(),
+                get<ImageLoadToolImpl>(),
+                get<UserManager>(),
+                get<UserLocationManager>()
+            )
+        }
         factory { AlertPresenter(get<APIManagerImpl>()) }
         factory { MountainPermitPresenter(get<APIManagerImpl>()) }
         factory { EventReportPresenter(get<APIManagerImpl>(), get<ImageLoadToolImpl>()) }
         factory { AccountPresenter(get<ImageLoadToolImpl>(), get<UserManager>(), get<APIManagerImpl>()) }
+        factory { EditAccountPresenter(get<UserManager>(), get<ImageLoadToolImpl>(), get<APIManagerImpl>()) }
     }
 
     private val managerModule = module {
