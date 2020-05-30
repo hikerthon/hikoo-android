@@ -56,10 +56,12 @@
         <activity android:name=".alert.AlertDetailActivity" />
         <activity android:name=".eventreport.EventDetailActivity" />
         <activity android:name=".mountainpermit.MountainPermitDetail" />
-        <activity android:name=".eventreport.newevent.NewEventActivity" />
+        <activity
+            android:name=".eventreport.newevent.NewEventActivity"
+            android:theme="@style/CustomCursor"/>
         <activity
             android:name=".account.EditAccountActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/CustomCursor"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
