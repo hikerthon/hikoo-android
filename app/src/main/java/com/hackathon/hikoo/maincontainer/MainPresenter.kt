@@ -123,4 +123,8 @@ class MainPresenter (
         }
     }
 
+    fun updatePermitInfo() {
+        userManager.fetchPermit()
+    }
+
 }

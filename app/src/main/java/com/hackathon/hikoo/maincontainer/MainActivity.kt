@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -28,6 +29,7 @@ import com.hackathon.hikoo.utils.ActionLock
 import com.hackathon.hikoo.utils.bindView
 import com.hackathon.hikoo.utils.imageloader.ImageLoadTool
 import com.hackathon.hikoo.view.AdvanceDrawerLayout
+import com.hackathon.hikoo.view.EventDialog
 import com.hackathon.hikoo.view.router.MainRouter
 import com.orhanobut.logger.Logger
 import org.koin.android.ext.android.inject
@@ -52,6 +54,8 @@ class MainActivity : BaseActivity(),
     private val router: MainRouter = MainRouter(supportFragmentManager, this)
     private val drawerItemClickLock = ActionLock()
 
+    private var eventDialog: EventDialog? = null
+
     private val userLocationManager: UserLocationManager by inject()
     private val drawerManager: DrawerManager by inject()
     private val presenter: MainPresenter by inject()
@@ -60,15 +64,40 @@ class MainActivity : BaseActivity(),
         override fun onReceive(context: Context, intent: Intent) {
             val title = intent.getStringExtra("Title")
             val body = intent.getStringExtra("Body")
+            val alertLevel = intent.getIntExtra("AlertLevel", -1)
+            val lat = intent.getDoubleExtra("Lat", 0.0)
+            val lng = intent.getDoubleExtra("Lng", 0.0)
 
-            showNotificationDialog(title, body)
+            if (title == "check-in") {
+                showNotificationDialog("Check-In", body)
+                presenter.updatePermitInfo()
+            } else if (title == "Hikoo"){
+                showEventDialog(body, alertLevel, lat, lng)
+            } else {
+                showNotificationDialog(title, body)
+            }
         }
+    }
+
+    private fun showEventDialog(description: String?, alertLevel: Int, lat: Double, lng: Double) {
+        this.eventDialog?.takeIf { it.isShowing }?.dismiss()
+
+        val eventDialog = EventDialog(this)
+
+        eventDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        eventDialog.show()
+
+        eventDialog.setAlertLevel(alertLevel)
+        eventDialog.setMapMarker(userLocationManager.currentLocation!!, lat, lng)
+        eventDialog.setDescription(description!!)
+
+        this.eventDialog = eventDialog
     }
 
     private fun showNotificationDialog(title: String?, body: String?) {
         AlertDialog.Builder(this)
             .setCancelable(false)
-            .setTitle("Warning")
+            .setTitle(title)
             .setMessage(body)
             .setPositiveButton("Got it") { dialog, which ->
                 dialog.dismiss()

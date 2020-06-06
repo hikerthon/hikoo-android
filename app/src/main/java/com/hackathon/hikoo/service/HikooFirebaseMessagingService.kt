@@ -60,7 +60,7 @@ class HikooFirebaseMessagingService: FirebaseMessagingService() {
             }
 
             sendNotification(remoteNotification!!)
-            sendLocalBroadcast(remoteNotification)
+            sendLocalBroadcast(remoteNotification, remoteMessage.data)
             vibrateDevice(1000)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -69,13 +69,19 @@ class HikooFirebaseMessagingService: FirebaseMessagingService() {
         }
     }
 
-    private fun sendLocalBroadcast(remoteNotification: RemoteMessage.Notification) {
+    private fun sendLocalBroadcast(remoteNotification: RemoteMessage.Notification, data: MutableMap<String, String?>) {
+        val alertLevel = data["alertlevel"]?.toInt()
+        val lat = data["latpt"]?.toDouble()
+        val lng = data["lngpt"]?.toDouble()
         val title = remoteNotification.title
         val body = remoteNotification.body
         val intent = Intent("Hikoo")
         val bundle = Bundle()
         bundle.putString("Title", title)
         bundle.putString("Body", body)
+        bundle.putInt("AlertLevel", alertLevel ?: -1)
+        bundle.putDouble("Lat", lat ?: 0.0)
+        bundle.putDouble("Lng", lng ?: 0.0)
         intent.putExtras(bundle)
         localBroadcastManager?.sendBroadcast(intent)
     }
